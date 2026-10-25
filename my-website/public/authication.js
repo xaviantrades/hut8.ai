@@ -1,79 +1,41 @@
-
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-
-// ==========================================
-// PUT YOUR FIREBASE CONFIG HERE
-// ==========================================
-const firebaseConfig = {
-    apiKey: "AIzaSyCywqYls2mJfY9maHRhsHRTP6OmPgC1Kf0",
-    authDomain: "x-shopping-6611d.firebaseapp.com",
-    projectId: "x-shopping-6611d",
-    storageBucket: "x-shopping-6611d.firebasestorage.app",
-    messagingSenderId: "177602183210",
-    appId: "1:177602183210:web:011c708002426b37cb8353",
-    measurementId: "G-QKLP9H1N9P"
-  };
-
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-
-// Firestore database
-const db = getFirestore(app);
-
-// auth.js
-// Custom Firestore Signup + Login Authentication
-// ==========================================================
-
-
-
-import {
-  doc,
-  getDoc,
-  setDoc,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-
+// authication.js
+// Signup + Login using the server API (/api/signup, /api/login, /api/me, /api/logout).
+// No Firebase code or password handling in the browser. The server hashes passwords,
+// talks to Firestore, and keeps the login session in an httpOnly cookie.
 
 // ==========================================================
 // CONFIGURATION
 // ==========================================================
 
-// Change this to the page you want users to enter after login.
-const LANDING_PAGE = "landing.html";
+// Protected page served by server.js after login (protected/landing.html).
+const LANDING_PAGE = "/dashboard";
 
-// Change this to your login/signup page if needed.
-const LOGIN_PAGE = "index.html";
+// Login/signup page.
+const LOGIN_PAGE = "/";
 
 
 // ==========================================================
-// PASSWORD HASH
-// ==========================================================
-// Passwords are NOT stored as plain text.
-// SHA-256 is used so the Firestore document contains only
-// the password hash.
+// API HELPER
 // ==========================================================
 
-async function hashPassword(password) {
+async function api(path, options = {}) {
 
-  const encoder = new TextEncoder();
+  const response = await fetch(path, {
+    method: options.method || "GET",
+    credentials: "same-origin",
+    headers: { "Content-Type": "application/json" },
+    body: options.body ? JSON.stringify(options.body) : undefined
+  });
 
-  const data = encoder.encode(password);
+  let data = {};
 
-  const hashBuffer = await crypto.subtle.digest(
-    "SHA-256",
-    data
-  );
+  try {
+    data = await response.json();
+  } catch (_) {
+    // Non-JSON response; keep data as {}.
+  }
 
-  const hashArray = Array.from(
-    new Uint8Array(hashBuffer)
-  );
-
-  return hashArray
-    .map(byte => byte.toString(16).padStart(2, "0"))
-    .join("");
+  return { ok: response.ok, status: response.status, data };
 }
 
 
@@ -86,19 +48,12 @@ function authNewCode(id) {
   const element = document.getElementById(id);
 
   if (element) {
-
     element.textContent =
-      Math.random()
-        .toString(36)
-        .slice(2, 7)
-        .toUpperCase();
-
+      Math.random().toString(36).slice(2, 7).toUpperCase();
   }
 }
 
-
-// Make it available to your inline HTML onclick:
-// onclick="authNewCode('authSCode')"
+// Used by inline HTML: onclick="authNewCode('authSCode')"
 window.authNewCode = authNewCode;
 
 
@@ -106,74 +61,65 @@ window.authNewCode = authNewCode;
 // GET ELEMENTS
 // ==========================================================
 
-const tabSignup =
-  document.getElementById("authTabSignup");
-
-const tabLogin =
-  document.getElementById("authTabLogin");
-
-const signupForm =
-  document.getElementById("authSignupForm");
-
-const loginForm =
-  document.getElementById("authLoginForm");
-
-const switchText =
-  document.getElementById("authSwitchText");
+const tabSignup  = document.getElementById("authTabSignup");
+const tabLogin   = document.getElementById("authTabLogin");
+const signupForm = document.getElementById("authSignupForm");
+const loginForm  = document.getElementById("authLoginForm");
+const switchText = document.getElementById("authSwitchText");
 
 
 // ==========================================================
-// CHECK EXISTING LOGIN
-// ==========================================================
-// This runs when the authentication page is opened.
-// If a previous login is saved, the user is redirected
-// automatically without logging in again.
+// SESSION HELPERS
 // ==========================================================
 
-function checkExistingLogin() {
+// Returns { userId, phone } if logged in, otherwise null.
+async function getCurrentUser() {
 
-  const isLoggedIn =
-    localStorage.getItem("isLoggedIn");
+  try {
+    const { ok, data } = await api("/api/me");
 
-  if (isLoggedIn === "true") {
+    if (!ok || !data.authenticated) return null;
 
-    window.location.replace(
-      LANDING_PAGE
-    );
+    return { isLoggedIn: true, userId: data.userId, phone: data.phone };
 
+  } catch (error) {
+    console.error("Session check error:", error);
+    return null;
+  }
+}
+
+window.getCurrentUser = getCurrentUser;
+
+
+// On the login page: if already logged in, go straight to the dashboard.
+async function checkExistingLogin() {
+
+  const user = await getCurrentUser();
+
+  if (user) {
+    window.location.replace(LANDING_PAGE);
   }
 }
 
 
-// ==========================================================
-// REQUIRE LOGIN (for pages OTHER than the login/signup page)
-// ==========================================================
-// Call this on any page that should only be visible to logged-in
-// users (landing.html, profile.html, etc). It checks the opposite
-// condition from checkExistingLogin: if you are NOT logged in,
-// you get sent back to the login page.
-// ==========================================================
+// On other pages: if NOT logged in, go back to the login page.
+// (The server already protects /dashboard; this is just a UX safety net.)
+async function requireLogin() {
 
-function requireLogin() {
+  const user = await getCurrentUser();
 
-  const isLoggedIn =
-    localStorage.getItem("isLoggedIn");
-
-  if (isLoggedIn !== "true") {
-
-    window.location.replace(
-      LOGIN_PAGE
-    );
-
+  if (!user) {
+    window.location.replace(LOGIN_PAGE);
   }
+
+  return user;
 }
 
-// Make available to other JavaScript files / inline scripts.
 window.requireLogin = requireLogin;
 
 
 // ==========================================================
-// SHOW SIGNUP
+// SHOW SIGNUP / SHOW LOGIN
 // ==========================================================
 
 function showSignup() {
@@ -181,67 +127,36 @@ function showSignup() {
   if (!signupForm || !loginForm) return;
 
   signupForm.classList.remove("auth-hidden");
-
   loginForm.classList.add("auth-hidden");
 
-
-  if (tabSignup) {
-    tabSignup.classList.add("auth-active");
-  }
-
-  if (tabLogin) {
-    tabLogin.classList.remove("auth-active");
-  }
-
+  if (tabSignup) tabSignup.classList.add("auth-active");
+  if (tabLogin) tabLogin.classList.remove("auth-active");
 
   if (switchText) {
-
     switchText.innerHTML =
       'Already have an account? <a id="authToLogin">Log in</a>';
 
-    const authToLogin =
-      document.getElementById("authToLogin");
-
-    if (authToLogin) {
-      authToLogin.onclick = showLogin;
-    }
+    const authToLogin = document.getElementById("authToLogin");
+    if (authToLogin) authToLogin.onclick = showLogin;
   }
 }
-
-
-// ==========================================================
-// SHOW LOGIN
-// ==========================================================
 
 function showLogin() {
 
   if (!signupForm || !loginForm) return;
 
   loginForm.classList.remove("auth-hidden");
-
   signupForm.classList.add("auth-hidden");
 
-
-  if (tabLogin) {
-    tabLogin.classList.add("auth-active");
-  }
-
-  if (tabSignup) {
-    tabSignup.classList.remove("auth-active");
-  }
-
+  if (tabLogin) tabLogin.classList.add("auth-active");
+  if (tabSignup) tabSignup.classList.remove("auth-active");
 
   if (switchText) {
-
     switchText.innerHTML =
       'Don\'t have an account? <a id="authToSignup">Sign up</a>';
 
-    const authToSignup =
-      document.getElementById("authToSignup");
-
-    if (authToSignup) {
-      authToSignup.onclick = showSignup;
-    }
+    const authToSignup = document.getElementById("authToSignup");
+    if (authToSignup) authToSignup.onclick = showSignup;
   }
 }
 
@@ -250,89 +165,11 @@ function showLogin() {
 // TAB EVENTS
 // ==========================================================
 
-if (tabSignup) {
-  tabSignup.onclick = showSignup;
-}
+if (tabSignup) tabSignup.onclick = showSignup;
+if (tabLogin) tabLogin.onclick = showLogin;
 
-if (tabLogin) {
-  tabLogin.onclick = showLogin;
-}
-
-const initialLoginLink =
-  document.getElementById("authToLogin");
-
-if (initialLoginLink) {
-  initialLoginLink.onclick = showLogin;
-}
-
-
-// ==========================================================
-// CREATE FIRESTORE USER
-// ==========================================================
-
-async function createUserAccount(phone, password) {
-
-  phone = phone.trim();
-
-
-  if (!phone || !password) {
-
-    throw new Error(
-      "Phone number and password are required."
-    );
-
-  }
-
-
-  // Use encoded phone as Firestore document ID.
-  const userId =
-    encodeURIComponent(phone);
-
-
-  const userRef =
-    doc(db, "users", userId);
-
-
-  // Check whether account already exists.
-  const existingUser =
-    await getDoc(userRef);
-
-
-  if (existingUser.exists()) {
-
-    throw new Error(
-      "An account with this phone number already exists."
-    );
-
-  }
-
-
-  // Hash password before saving.
-  const passwordHash =
-    await hashPassword(password);
-
-
-  // Save user to Firestore.
-  await setDoc(userRef, {
-
-    phone: phone,
-
-    passwordHash: passwordHash,
-
-    createdAt: serverTimestamp()
-
-  });
-
-
-  return {
-
-    success: true,
-
-    userId: userId
-
-  };
-
-}
+const initialLoginLink = document.getElementById("authToLogin");
+if (initialLoginLink) initialLoginLink.onclick = showLogin;
 
 
 // ==========================================================
@@ -341,165 +178,80 @@ async function createUserAccount(phone, password) {
 
 if (signupForm) {
 
-  signupForm.addEventListener(
-    "submit",
-    async function (e) {
+  signupForm.addEventListener("submit", async function (e) {
 
-      e.preventDefault();
+    e.preventDefault();
 
+    const msg = document.getElementById("authSMsg");
 
-      const msg =
-        document.getElementById("authSMsg");
+    const phone = document.getElementById("authSName").value.trim();
+    const password = document.getElementById("authSpass").value;
+    const confirmPassword = document.getElementById("authSPass").value;
 
+    const captchaCode = document.getElementById("authSCode").textContent;
+    const captchaInput = document
+      .getElementById("authSCaptcha")
+      .value.trim()
+      .toUpperCase();
 
-      const phone =
-        document.getElementById("authSName")
-          .value
-          .trim();
-
-
-      const password =
-        document.getElementById("authSpass")
-          .value;
-
-
-      const confirmPassword =
-        document.getElementById("authSPass")
-          .value;
-
-
-      const captchaCode =
-        document.getElementById("authSCode")
-          .textContent;
-
-
-      const captchaInput =
-        document.getElementById("authSCaptcha")
-          .value
-          .trim()
-          .toUpperCase();
-
-
-      // ------------------------------------------
-      // PASSWORD MATCH
-      // ------------------------------------------
-
-      if (password !== confirmPassword) {
-
-        msg.className =
-          "auth-msg auth-err";
-
-        msg.textContent =
-          "Passwords do not match.";
-
-        return;
-
-      }
-
-
-      // ------------------------------------------
-      // CAPTCHA
-      // ------------------------------------------
-
-      if (captchaInput !== captchaCode) {
-
-        msg.className =
-          "auth-msg auth-err";
-
-        msg.textContent =
-          "Incorrect code. Try again.";
-
-        authNewCode("authSCode");
-
-        document.getElementById(
-          "authSCaptcha"
-        ).value = "";
-
-        return;
-
-      }
-
-
-      // ------------------------------------------
-      // LOADING MESSAGE
-      // ------------------------------------------
-
-      msg.className =
-        "auth-msg";
-
-      msg.textContent =
-        "Creating your account...";
-
-
-      try {
-
-        const result =
-          await createUserAccount(
-            phone,
-            password
-          );
-
-
-        console.log(
-          "User created:",
-          result.userId
-        );
-
-
-        // ----------------------------------------
-        // SUCCESS
-        // ----------------------------------------
-
-        msg.className =
-          "auth-msg auth-ok";
-
-        msg.textContent =
-          "Account created successfully!";
-
-
-        // Clear form.
-        signupForm.reset();
-
-
-        // Generate new CAPTCHA.
-        authNewCode("authSCode");
-
-
-        // ----------------------------------------
-        // OPTIONAL:
-        // Automatically switch to login
-        // ----------------------------------------
-
-        setTimeout(() => {
-
-          showLogin();
-
-        }, 1000);
-
-
-      } catch (error) {
-
-        console.error(
-          "Signup error:",
-          error
-        );
-
-
-        msg.className =
-          "auth-msg auth-err";
-
-        msg.textContent =
-          error.message ||
-          "Unable to create account.";
-
-
-        authNewCode("authSCode");
-
-      }
-
+    // Password match
+    if (password !== confirmPassword) {
+      msg.className = "auth-msg auth-err";
+      msg.textContent = "Passwords do not match.";
+      return;
     }
-  );
 
+    // Length (the server enforces this too)
+    if (password.length < 8) {
+      msg.className = "auth-msg auth-err";
+      msg.textContent = "Password must contain at least 8 characters.";
+      return;
+    }
+
+    // Captcha (UX only; it is not real bot protection)
+    if (captchaInput !== captchaCode) {
+      msg.className = "auth-msg auth-err";
+      msg.textContent = "Incorrect code. Try again.";
+      authNewCode("authSCode");
+      document.getElementById("authSCaptcha").value = "";
+      return;
+    }
+
+    msg.className = "auth-msg";
+    msg.textContent = "Creating your account...";
+
+    try {
+
+      const { ok, data } = await api("/api/signup", {
+        method: "POST",
+        body: { phone, password }
+      });
+
+      if (!ok) {
+        msg.className = "auth-msg auth-err";
+        msg.textContent = data.error || "Unable to create account.";
+        authNewCode("authSCode");
+        return;
+      }
+
+      msg.className = "auth-msg auth-ok";
+      msg.textContent = "Account created successfully!";
+
+      signupForm.reset();
+      authNewCode("authSCode");
+
+      // Switch to the login form.
+      setTimeout(showLogin, 1000);
+
+    } catch (error) {
+
+      console.error("Signup error:", error);
+
+      msg.className = "auth-msg auth-err";
+      msg.textContent = "Unable to reach the server. Please try again.";
+      authNewCode("authSCode");
+    }
+  });
 }
 
 
@@ -509,226 +261,64 @@ if (signupForm) {
 
 if (loginForm) {
 
-  loginForm.addEventListener(
-    "submit",
-    async function (e) {
-
-      e.preventDefault();
-
-
-      const msg =
-        document.getElementById("authLMsg");
-
-
-      const phone =
-        document.getElementById("authLEmail")
-          .value
-          .trim();
-
-
-      const password =
-        document.getElementById("authLPass")
-          .value;
-
-
-      const captchaCode =
-        document.getElementById("authLCode")
-          .textContent;
-
-
-      const captchaInput =
-        document.getElementById("authLCaptcha")
-          .value
-          .trim()
-          .toUpperCase();
-
-
-      // ------------------------------------------
-      // CAPTCHA CHECK
-      // ------------------------------------------
-
-      if (captchaInput !== captchaCode) {
-
-        msg.className =
-          "auth-msg auth-err";
-
-        msg.textContent =
-          "Incorrect code. Try again.";
-
-        authNewCode("authLCode");
-
-        document.getElementById(
-          "authLCaptcha"
-        ).value = "";
-
-        return;
-
-      }
-
-
-      // ------------------------------------------
-      // LOADING
-      // ------------------------------------------
-
-      msg.className =
-        "auth-msg";
-
-      msg.textContent =
-        "Logging in...";
-
-
-      try {
-
-        // ----------------------------------------
-        // FIND USER
-        // ----------------------------------------
-
-        const userId =
-          encodeURIComponent(phone);
-
-
-        const userRef =
-          doc(db, "users", userId);
-
-
-        const userSnap =
-          await getDoc(userRef);
-
-
-        // ----------------------------------------
-        // USER NOT FOUND
-        // ----------------------------------------
-
-        if (!userSnap.exists()) {
-
-          msg.className =
-            "auth-msg auth-err";
-
-          msg.textContent =
-            "Incorrect phone number or password.";
-
-          authNewCode("authLCode");
-
-          return;
-
-        }
-
-
-        // ----------------------------------------
-        // GET USER DATA
-        // ----------------------------------------
-
-        const userData =
-          userSnap.data();
-
-
-        // ----------------------------------------
-        // HASH ENTERED PASSWORD
-        // ----------------------------------------
-
-        const enteredPasswordHash =
-          await hashPassword(password);
-
-
-        // ----------------------------------------
-        // CHECK PASSWORD
-        // ----------------------------------------
-
-        if (
-          enteredPasswordHash !==
-          userData.passwordHash
-        ) {
-
-          msg.className =
-            "auth-msg auth-err";
-
-          msg.textContent =
-            "Incorrect phone number or password.";
-
-          authNewCode("authLCode");
-
-          return;
-
-        }
-
-
-        // ========================================
-        // LOGIN SUCCESS
-        // ========================================
-
-        // Save login state.
-        localStorage.setItem(
-          "isLoggedIn",
-          "true"
-        );
-
-
-        // Save user ID.
-        localStorage.setItem(
-          "userId",
-          userId
-        );
-
-
-        // Save phone.
-        localStorage.setItem(
-          "userPhone",
-          userData.phone
-        );
-
-
-        // Store only non-sensitive user data.
-        localStorage.setItem(
-          "userData",
-          JSON.stringify({
-            phone: userData.phone
-          })
-        );
-
-
-        // ----------------------------------------
-        // SUCCESS MESSAGE
-        // ----------------------------------------
-
-        msg.className =
-          "auth-msg auth-ok";
-
-        msg.textContent =
-          "Login successful!";
-
-
-        // ----------------------------------------
-        // REDIRECT
-        // ----------------------------------------
-
-        setTimeout(() => {
-
-          window.location.replace(
-            LANDING_PAGE
-          );
-
-        }, 500);
-
-
-      } catch (error) {
-
-        console.error(
-          "Login error:",
-          error
-        );
-
-
-        msg.className =
-          "auth-msg auth-err";
-
-        msg.textContent =
-          "Something went wrong. Please try again.";
-
-      }
-
+  loginForm.addEventListener("submit", async function (e) {
+
+    e.preventDefault();
+
+    const msg = document.getElementById("authLMsg");
+
+    const phone = document.getElementById("authLEmail").value.trim();
+    const password = document.getElementById("authLPass").value;
+
+    const captchaCode = document.getElementById("authLCode").textContent;
+    const captchaInput = document
+      .getElementById("authLCaptcha")
+      .value.trim()
+      .toUpperCase();
+
+    // Captcha
+    if (captchaInput !== captchaCode) {
+      msg.className = "auth-msg auth-err";
+      msg.textContent = "Incorrect code. Try again.";
+      authNewCode("authLCode");
+      document.getElementById("authLCaptcha").value = "";
+      return;
     }
-  );
 
+    msg.className = "auth-msg";
+    msg.textContent = "Logging in...";
+
+    try {
+
+      const { ok, data } = await api("/api/login", {
+        method: "POST",
+        body: { phone, password }
+      });
+
+      if (!ok) {
+        msg.className = "auth-msg auth-err";
+        msg.textContent = data.error || "Incorrect phone number or password.";
+        authNewCode("authLCode");
+        return;
+      }
+
+      msg.className = "auth-msg auth-ok";
+      msg.textContent = "Login successful!";
+
+      // The session cookie is already set by the server.
+      setTimeout(() => {
+        window.location.replace(LANDING_PAGE);
+      }, 500);
+
+    } catch (error) {
+
+      console.error("Login error:", error);
+
+      msg.className = "auth-msg auth-err";
+      msg.textContent = "Something went wrong. Please try again.";
+      authNewCode("authLCode");
+    }
+  });
 }
 
 
@@ -736,105 +326,41 @@ if (loginForm) {
 // LOGOUT
 // ==========================================================
 
-function logout() {
+async function logout() {
 
-  localStorage.removeItem(
-    "isLoggedIn"
-  );
+  try {
+    await api("/api/logout", { method: "POST" });
+  } catch (error) {
+    console.error("Logout error:", error);
+  }
 
-  localStorage.removeItem(
-    "userId"
-  );
-
-  localStorage.removeItem(
-    "userPhone"
-  );
-
-  localStorage.removeItem(
-    "userData"
-  );
-
-
-  window.location.replace(
-    LOGIN_PAGE
-  );
-
+  window.location.replace(LOGIN_PAGE);
 }
 
-
-// Make logout available to HTML.
 window.logout = logout;
 
 
 // ==========================================================
-// GET CURRENT USER
+// SHOW PHONE NUMBER ON PAGES THAT HAVE <span id="phone-Owner">
 // ==========================================================
 
-function getCurrentUser() {
-
-  const isLoggedIn =
-    localStorage.getItem("isLoggedIn");
-
-
-  if (isLoggedIn !== "true") {
-    return null;
-  }
-
-
-  const userData =
-    JSON.parse(
-      localStorage.getItem(
-        "userData"
-      ) || "{}"
-    );
-
-
-  return {
-
-    isLoggedIn: true,
-
-    userId:
-      localStorage.getItem("userId"),
-
-    phone:
-      localStorage.getItem("userPhone"),
-
-    ...userData
-
-  };
-
-}
-
-// Make available to other JavaScript files.
-window.getCurrentUser = getCurrentUser;
 const phoneOwner = document.getElementById("phone-Owner");
 
 if (phoneOwner) {
-    phoneOwner.textContent = localStorage.getItem("userPhone") || "";
+  getCurrentUser().then((user) => {
+    phoneOwner.textContent = user ? user.phone : "";
+  });
 }
+
 
 // ==========================================================
 // INITIALIZATION
 // ==========================================================
 
-// Only skip-to-landing if we're actually on the login/signup page
-// (i.e. this page has the forms). Other pages that load this same
-// script — landing.html, profile.html, etc. — should call
-// requireLogin() themselves instead. See note above requireLogin().
+// Only the login/signup page has these forms.
 if (signupForm || loginForm) {
   checkExistingLogin();
 }
 
-
-// Generate CAPTCHA codes.
-if (
-  document.getElementById("authSCode")
-) {
-  authNewCode("authSCode");
-}
-
-if (
-  document.getElementById("authLCode")
-) {
-  authNewCode("authLCode");
-}
+if (document.getElementById("authSCode")) authNewCode("authSCode");
+if (document.getElementById("authLCode")) authNewCode("authLCode");
