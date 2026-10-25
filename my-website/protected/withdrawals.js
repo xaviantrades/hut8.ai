@@ -47,46 +47,8 @@ const withdrawalsCollection = collection(db, COLLECTION_NAME);
 
 
 
-function getCurrentUser() {
-
-    const isLoggedIn =
-        localStorage.getItem("isLoggedIn");
-
-    if (isLoggedIn !== "true") {
-        return null;
-    }
-
-    let userData = {};
-
-    try {
-
-        userData = JSON.parse(
-            localStorage.getItem("userData") || "{}"
-        );
-
-    } catch (error) {
-
-        console.error(
-            "Invalid userData in localStorage:",
-            error
-        );
-
-    }
-
-    return {
-
-        isLoggedIn: true,
-
-        userId:
-            localStorage.getItem("userId"),
-
-        phone:
-            localStorage.getItem("userPhone"),
-
-        ...userData
-
-    };
-}
+// getCurrentUser() now comes from authication.js (window.getCurrentUser)
+// It is async: use  const user = await getCurrentUser();
 
 
 //------------------
@@ -98,7 +60,7 @@ async function saveSelectedItemToFirestore(data) {
   try {
 
     // Get the currently logged-in user
-    const userId = localStorage.getItem("userId");
+    const userId = (await getCurrentUser())?.userId;
 
     if (!userId) {
       console.log("No logged-in user found.");
@@ -171,8 +133,7 @@ async function saveSelectedItemToFirestore(data) {
 
 async function getCurrentAmount() {
 
-    const currentUser =
-        getCurrentUser();
+    const currentUser = await getCurrentUser();
 
     if (
         !currentUser ||
@@ -250,8 +211,7 @@ function showPopup(text) {
 
 async function deductAmount(amountToDeduct) {
 
-    const currentUser =
-        getCurrentUser();
+    const currentUser = await getCurrentUser();
 
     if (
         !currentUser ||
@@ -559,8 +519,7 @@ if (placeAibuyBtn) {
             // --------------------------------
             // 2. Get logged-in user's ID
             // --------------------------------
-            const userId =
-                localStorage.getItem("userId");
+            const userId = (await getCurrentUser())?.userId;
 
             if (!userId) {
                 console.error("No logged-in user found.");
@@ -684,7 +643,7 @@ function checkExpiry(expiry) {
 
 async function checkInvestmentExpiry() {
 
-      const userId = localStorage.getItem("userId");
+      const userId = (await getCurrentUser())?.userId;
 
       if (!userId) {
           document.getElementById("status-message").innerText = "No logged-in user found.";
@@ -879,7 +838,7 @@ export { loadWithdrawals };
 
 async function saveBTCBalance(btcBalance) {
 
-    const currentUser = getCurrentUser();
+    const currentUser = await getCurrentUser();
 
     if (!currentUser || !currentUser.userId) {
 
@@ -929,7 +888,7 @@ async function saveBTCBalance(btcBalance) {
 // ===============================================
 async function saveInitialBTCPrice(price) {
 
-    const currentUser = getCurrentUser();
+    const currentUser = await getCurrentUser();
 
     if (!currentUser || !currentUser.userId) {
         console.error("No logged-in user found.");
@@ -985,7 +944,7 @@ async function saveInitialBTCPrice(price) {
 // ===============================================
 async function getInitialBTCPrice() {
 
-    const currentUser = getCurrentUser();
+    const currentUser = await getCurrentUser();
 
     if (!currentUser || !currentUser.userId) {
         console.error("No logged-in user found.");
@@ -1173,7 +1132,7 @@ console.log("Hi withdrawal logic js is running");
 // ======================================================
 async function getBTCBalance() {
 
-    const currentUser = getCurrentUser();
+    const currentUser = await getCurrentUser();
 
     if (!currentUser || !currentUser.userId) {
         console.error("No logged-in user found.");
@@ -1567,7 +1526,7 @@ checkInvestmentExpiry();
 
 async function processExpiredInvestments() {
 
-    const userId = localStorage.getItem("userId");
+    const userId = (await getCurrentUser())?.userId;
 
     if (!userId) {
         console.log("No logged-in user found.");
@@ -1683,7 +1642,7 @@ async function processExpiredInvestments() {
 
 async function displayAIIncome() {
 
-    const userId = localStorage.getItem("userId");
+    const userId = (await getCurrentUser())?.userId;
 
     if (!userId) {
         return;
