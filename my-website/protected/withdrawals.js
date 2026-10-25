@@ -850,8 +850,8 @@ async function loadWithdrawals() {
 
     renderWithdrawals(container, withdrawals);
   } catch (error) {
-    console.error("Error loading withdrawal data from Firestore:", error);
-    renderEmpty(container, "Could not load withdrawals. Please try again.");
+    console.error("Error loading AI Machine data from Firestore:", error);
+    renderEmpty(container, "Could not load Machines. Please try again.");
   }
 }
 
