@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 240">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#06162d"/>
+      <stop offset="50%" stop-color="#0a2547"/>
+      <stop offset="100%" stop-color="#040d1c"/>
+    </linearGradient>
+    <linearGradient id="cardGlow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#25b8ff"/>
+      <stop offset="100%" stop-color="#00e676"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="240" rx="20" fill="url(#bg)"/>
+  <path d="M0 185 Q160 135 320 175 T640 155 L640 240 L0 240 Z" fill="rgba(37,184,255,0.12)"/>
+  <path d="M0 200 Q180 155 360 190 T640 175" fill="none" stroke="url(#cardGlow)" stroke-width="2.5" opacity="0.7"/>
+  <g transform="translate(430,28) rotate(-12)">
+    <rect width="84" height="120" rx="12" fill="#0d2240" stroke="#25b8ff" stroke-width="2.5"/>
+    <text x="42" y="55" text-anchor="middle" font-size="28" fill="#25b8ff">♠</text>
+    <text x="42" y="88" text-anchor="middle" font-family="monospace" font-weight="bold" font-size="16" fill="#fff">0007</text>
+  </g>
+  <g transform="translate(495,38) rotate(10)">
+    <rect width="84" height="120" rx="12" fill="#102a3b" stroke="#00e676" stroke-width="2.5"/>
+    <text x="42" y="55" text-anchor="middle" font-size="28" fill="#00e676">♦</text>
+    <text x="42" y="88" text-anchor="middle" font-family="monospace" font-weight="bold" font-size="16" fill="#fff">WIN</text>
+  </g>
+  <circle cx="80" cy="60" r="3" fill="#00e676"/>
+  <circle cx="380" cy="45" r="4" fill="#25b8ff"/>
+  <circle cx="600" cy="80" r="3" fill="#ffd54a"/>
+  <text x="36" y="76" font-family="system-ui,sans-serif" font-size="13" font-weight="700" fill="#25b8ff" letter-spacing="2.5">DAILY 7:00 PM LUCKY DRAW</text>
+  <text x="36" y="116" font-family="system-ui,sans-serif" font-size="30" font-weight="800" fill="#ffffff">Flip &amp; Win UGX 200,000</text>
+  <text x="36" y="148" font-family="system-ui,sans-serif" font-size="14" fill="#9bb4d0">Pick any lucky raffle card for UGX 20,000 and enter tonight's prize pool.</text>
+</svg>

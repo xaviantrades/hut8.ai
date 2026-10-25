@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 220">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#091d38"/>
+      <stop offset="100%" stop-color="#040c1a"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffe066"/>
+      <stop offset="100%" stop-color="#f59f00"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="220" rx="20" fill="url(#bg)"/>
+  <circle cx="520" cy="110" r="64" fill="rgba(255,213,74,0.08)" stroke="rgba(255,213,74,0.35)" stroke-width="2"/>
+  <path d="M482 132 L490 88 L508 108 L520 80 L532 108 L550 88 L558 132 Z" fill="url(#gold)"/>
+  <rect x="484" y="136" width="72" height="10" rx="4" fill="url(#gold)"/>
+  <text x="36" y="72" font-family="system-ui,sans-serif" font-size="12" font-weight="700" fill="#ffd54a" letter-spacing="2.5">AIVI ELITE TIERS</text>
+  <text x="36" y="112" font-family="system-ui,sans-serif" font-size="28" font-weight="800" fill="#ffffff">VIP Tasks &amp; Exclusive Rewards</text>
+  <text x="36" y="146" font-family="system-ui,sans-serif" font-size="14" fill="#9bb4d0">Unlock Z-1 to Z-4 monthly salaries and higher AI yield multipliers.</text>
+</svg>

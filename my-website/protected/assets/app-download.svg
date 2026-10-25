@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 220">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#071b34"/>
+      <stop offset="100%" stop-color="#030915"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="220" rx="20" fill="url(#bg)"/>
+  <rect x="485" y="28" width="86" height="164" rx="16" fill="#0b182c" stroke="#25b8ff" stroke-width="2.5"/>
+  <rect x="513" y="36" width="30" height="4" rx="2" fill="#25b8ff" opacity="0.5"/>
+  <polyline points="498,132 516,115 530,124 556,92" fill="none" stroke="#00e676" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="556" cy="92" r="4" fill="#00e676"/>
+  <text x="36" y="72" font-family="system-ui,sans-serif" font-size="12" font-weight="700" fill="#25b8ff" letter-spacing="2.5">MOBILE EXPERIENCE</text>
+  <text x="36" y="112" font-family="system-ui,sans-serif" font-size="28" font-weight="800" fill="#ffffff">AIVI AI Mobile Web App</text>
+  <text x="36" y="146" font-family="system-ui,sans-serif" font-size="14" fill="#9bb4d0">Install straight to your Android or iOS home screen for 1-tap access.</text>
+</svg>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 220">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#071e38"/>
+      <stop offset="100%" stop-color="#040b18"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="220" rx="20" fill="url(#bg)"/>
+  <circle cx="520" cy="110" r="56" fill="rgba(37,184,255,0.12)" stroke="#25b8ff" stroke-width="2"/>
+  <path d="M494 114v-8a26 26 0 0 1 52 0v8" fill="none" stroke="#25b8ff" stroke-width="4" stroke-linecap="round"/>
+  <rect x="488" y="110" width="12" height="22" rx="6" fill="#00e676"/>
+  <rect x="540" y="110" width="12" height="22" rx="6" fill="#00e676"/>
+  <path d="M546 132c0 10-10 16-22 16h-6" fill="none" stroke="#25b8ff" stroke-width="3" stroke-linecap="round"/>
+  <text x="36" y="72" font-family="system-ui,sans-serif" font-size="12" font-weight="700" fill="#00e676" letter-spacing="2.5">24/7 DEDICATED MANAGER</text>
+  <text x="36" y="112" font-family="system-ui,sans-serif" font-size="28" font-weight="800" fill="#ffffff">Priority Investor Support</text>
+  <text x="36" y="146" font-family="system-ui,sans-serif" font-size="14" fill="#9bb4d0">Fast assistance for deposits, withdrawals, VIP upgrades, and account care.</text>
+</svg>
