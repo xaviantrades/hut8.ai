@@ -42,46 +42,8 @@ const db = getFirestore(app);
 // GET CURRENT LOGGED-IN USER
 // ==========================================
 
-function getCurrentUser() {
-
-    const isLoggedIn =
-        localStorage.getItem("isLoggedIn");
-
-    if (isLoggedIn !== "true") {
-        return null;
-    }
-
-    let userData = {};
-
-    try {
-
-        userData = JSON.parse(
-            localStorage.getItem("userData") || "{}"
-        );
-
-    } catch (error) {
-
-        console.error(
-            "Invalid userData in localStorage:",
-            error
-        );
-
-    }
-
-    return {
-
-        isLoggedIn: true,
-
-        userId:
-            localStorage.getItem("userId"),
-
-        phone:
-            localStorage.getItem("userPhone"),
-
-        ...userData
-
-    };
-}
+// getCurrentUser() now comes from authication.js (window.getCurrentUser)
+// It is async: use  const user = await getCurrentUser();
 
 
 // ==========================================
@@ -113,7 +75,7 @@ async function processMomoPayment() {
         // GET CURRENT USER
         // -----------------------------
 
-        const currentUser = getCurrentUser();
+        const currentUser = await getCurrentUser();
 
         if (!currentUser || !currentUser.userId) {
             console.error("No logged-in user found.");
@@ -196,16 +158,16 @@ const savedmomoAmount =
 }
 
 
-document.addEventListener('DOMContentLoaded',() => {
+document.addEventListener('DOMContentLoaded', async () => {
   console.log(
                     "marzpay logic reached:"
                 );
 
-const currentUse = getCurrentUser();
+const currentUse = await getCurrentUser();
 
 if (!currentUse || !currentUse.userId) {
     console.error("No logged-in user found.");
-    
+    return;
 }
 
 const userId = currentUse.userId;
@@ -371,10 +333,9 @@ const API_BASE = 'https://marzpay-api.investinginaionline.workers.dev';
 // (live-updates whenever amount changes)
 // ==========================================/
 
-function displayTotalDeposited() {
+async function displayTotalDeposited() {
 
-    const currentUser =
-        getCurrentUser();
+    const currentUser = await getCurrentUser();
 
     if (
         !currentUser ||
