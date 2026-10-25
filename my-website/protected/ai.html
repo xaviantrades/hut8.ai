@@ -1,0 +1,218 @@
+<!DOCTYPE html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1"><meta name=google content=notranslate><meta name=msapplication-TileColor content=#000000><meta name=theme-color content=#ffffff><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><title>Exploring AI Model Purchase</title>
+<link rel=stylesheet href="popUpstyle.css">
+  
+  <script>document.addEventListener('DOMContentLoaded', function() {
+                document.documentElement.style.fontSize = document.documentElement.clientWidth / 20 + 'px'
+            })</script><script src=./static/uni.webview.js></script><script>// 待触发 `UniAppJSBridgeReady` 事件后，即可调用 uni 的 API。
+			document.addEventListener('UniAppJSBridgeReady', function() {
+				console.log('UniAppJSBridgeReady');
+				webUni.getEnv(function(res) {
+					
+				});
+			});
+
+              
+/* ==============================
+       AI POPUP LOGIC
+    =============================== */
+
+    function openAi() {
+
+        document.getElementById("aiOverlay")
+            .classList.add("active");
+
+        document.body.style.overflow = "hidden";
+    }
+
+      
+    /* ==============================
+       CLOSE POPUP WINDOWS
+    =============================== */
+
+    function closeAi() {
+
+        document.getElementById("aiOverlay")
+            .classList.remove("active");
+        document.body.style.overflow = "";
+    }
+  
+            </script><link rel=stylesheet href=./static/index.883130ca.css></head><body><noscript><strong>Please enable JavaScript to continue.</strong></noscript><div class=waves></div><div id=app></div><script src=./static/js/chunk-vendors.395c67ec.js></script><script src=./static/js/index.a822f0e6.js></script></body><link href="wave-background.css" rel="stylesheet" scoped>
+  <link rel="stylesheet" href="allpoups.css">
+  <style>
+    html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+    }
+  </style>
+  <body>
+
+    
+<div id="allpopupOverlay" class="allpopup-overlay">
+    <div class="allpopup-alert">
+        <div id="allpopupText" class="allpopup-text"></div>
+
+        <button class="allpopup-close">
+            OK
+        </button>
+    </div>
+</div>
+    
+<!-- -->
+<div class="ai-products-header">
+
+  
+
+    <div class="ai-header-content">
+        <span class="ai-header-label">AI MODELS</span>
+
+        <h2>Buy AI MODEL STOCKS</h2>
+
+        <p>
+            Discover our most profitable AI Investment Tiers 
+        </p>
+    </div>
+
+    <a class="vip-ai-link">
+        <i class="fa-solid fa-crown"></i>
+        <span>
+            <strong id="aiinocmu">UGX 0.00</strong>
+            <small>Click to Withdraw your Investment</small>
+        </span>
+        <i class="fa-solid fa-chevron-right"></i>
+    </a>
+
+</div>
+
+
+
+    
+<!--AI CARDVIEW LISTING-->
+ <div id="withdraw-container" onclick="openAi()"></div>
+
+
+
+<div id="aiOverlay" class="ai-overlay">
+
+    <div class="ai-page">
+
+
+        <!-- HEADER -->
+        <div class="ai-header">
+
+            <button class="back-btn" onclick="closeAi()">X</button>
+
+            <div class="ai-title"  id="withdraw-title">
+                
+            </div>
+
+        </div>
+
+<div>
+
+  <div id="overlay">
+  <div id="overlay-content">
+    <h2 id="withdraw-title"></h2>
+
+    <div>
+      <p id="withdraw-lock"></p>
+      <p> <strong id="withdraw-price"></strong></p>
+      <p id="withdraw-total-income" style="
+        display:inline-block;
+        padding:3px 8px;
+        font-size:22px;
+        font-weight:600;
+        color:#00e676;
+        letter-spacing:2px;
+    "></p>
+      <p id="description">
+        Stake your capital in the AI protocol for the designated lock-up period to accrue yield. All returns are automatically settled directly into your digital wallet
+      </p>
+    </div>
+    
+    <button id="place-aibuy">PLACE BUY</button>
+  </div>
+</div>
+
+</div>
+        
+
+    </div>
+
+</div>
+
+
+
+    
+
+  <div style="padding-bottom: 65px;"></div>
+
+
+
+      <!-- ========= BOTTOM NAV ========= -->
+  <nav class="nav" style="z-index: 1000;  ">
+    <a href="landing.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <ellipse cx="12" cy="5" rx="8" ry="3"/>
+        <path d="M4 5v4c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/>
+        <path d="M4 9v4c0 1.66 3.58 3 8 3s8-1.34 8-3V9"/>
+        <path d="M4 13v4c0 1.66 3.58 3 8 3s8-1.34 8-3v-4"/>
+      </svg>
+      Home
+    </a>
+    <a href="raffle.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <rect x="3" y="3" width="8" height="8" rx="1.5"/>
+        <rect x="13" y="3" width="8" height="8" rx="1.5"/>
+        <rect x="3" y="13" width="8" height="8" rx="1.5"/>
+        <rect x="13" y="13" width="8" height="8" rx="1.5"/>
+      </svg>
+      Raffle
+    </a>
+    <a href="chats.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round">
+        <path d="M9 3.5h9a2.5 2.5 0 0 1 2.5 2.5v4.5a2.5 2.5 0 0 1-2.5 2.5h-1v3.2l-3.2-3.2h-1.3"/>
+        <path d="M4.5 8h8A2.5 2.5 0 0 1 15 10.5v4a2.5 2.5 0 0 1-2.5 2.5H8l-4 3.2V17H4.5A2.5 2.5 0 0 1 2 14.5v-4A2.5 2.5 0 0 1 4.5 8z"/>
+      </svg>
+      chats
+    </a>
+    <a href="#" class="active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <rect x="6.5" y="6.5" width="11" height="11" rx="2"/>
+        <rect x="10" y="10" width="4" height="4" rx="1"/>
+        <path d="M9.5 6.5V3.5M12 6.5V3.5M14.5 6.5V3.5M9.5 20.5v-3M12 20.5v-3M14.5 20.5v-3"/>
+        <path d="M6.5 9.5h-3M6.5 12h-3M6.5 14.5h-3M20.5 9.5h-3M20.5 12h-3M20.5 14.5h-3"/>
+      </svg>
+      AI
+    </a>
+    <a href="bitcoin-income.html">
+      <svg viewBox="0 0 24 24">
+        <line x1="9" x2="9" y1="4" y2="21" stroke="currentColor" stroke-width="2.2"/>
+        <line x1="13" x2="13" y1="4" y2="21" stroke="currentColor" stroke-width="2.2"/>
+        <text x="11.8" y="18.2" text-anchor="middle" font-size="17" font-weight="800"
+              font-family="Arial,Helvetica,sans-serif" fill="currentColor">B</text>
+      </svg>
+      Income
+    </a>
+    <a href="user-account.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <circle cx="12" cy="7.5" r="4"/>
+        <path d="M4.5 20.5c0-4 3.5-6.7 7.5-6.7s7.5 2.7 7.5 6.7"/>
+      </svg>
+      My
+    </a>
+  </nav>
+    
+    <script src="wave-background.js"></script>
+    
+    
+    
+
+<script type="module" src="authication.js"></scrip>
+<script type="module">
+  requireLogin();
+</script>
+    <script type="module" src="full-screenlogic.js"></script>
+   <script type="module" src="withdrawals.js"> </script>
+  </body>
+</html>
+    

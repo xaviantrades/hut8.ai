@@ -1,0 +1,477 @@
+<!DOCTYPE html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1"><meta name=google content=notranslate><meta name=msapplication-TileColor content=#000000><meta name=theme-color content=#ffffff><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><title>General Announcements</title><script>document.addEventListener('DOMContentLoaded', function() {
+                document.documentElement.style.fontSize = document.documentElement.clientWidth / 20 + 'px'
+            })</script><script src=./static/uni.webview.js></script><script>// 待触发 `UniAppJSBridgeReady` 事件后，即可调用 uni 的 API。
+			document.addEventListener('UniAppJSBridgeReady', function() {
+				console.log('UniAppJSBridgeReady');
+				webUni.getEnv(function(res) {
+					
+				});
+			});</script><link rel=stylesheet href=./static/index.883130ca.css></head><body><noscript><strong>Please enable JavaScript to continue.</strong></noscript><div class=waves></div><div id=app></div><script src=./static/js/chunk-vendors.395c67ec.js></script><script src=./static/js/index.a822f0e6.js></script></body><link href="wave-background.css" rel="stylesheet" scoped></>
+  <body>
+
+
+
+
+
+    
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    
+    .page-header {
+    width: 100%;
+    margin-bottom: 18px;
+}
+
+.announcement-header {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 16px 15px;
+
+    background: #050505;
+
+    
+
+    box-sizing: border-box;
+}
+
+/* Icon */
+.announcement-icon {
+    width: 42px;
+    height: 42px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0, 140, 255, 0.12);
+
+    border: 1px solid rgba(0, 140, 255, 0.4);
+    border-radius: 12px;
+
+    color: #008cff;
+    font-size: 18px;
+}
+
+/* Title + subtitle */
+.announcement-heading {
+    min-width: 0;
+    flex: 1;
+}
+
+.announcement-heading h2 {
+    margin: 0 0 4px;
+
+    color: #fff;
+
+    font-size: 19px;
+    font-weight: 700;
+
+    line-height: 1.2;
+}
+
+.announcement-heading p {
+    margin: 0;
+
+    color: #9da7b3;
+
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+/* Small status */
+.announcement-status {
+    position: absolute;
+
+    top: 10px;
+    right: 12px;
+
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    color: #00e676;
+
+    font-size: 9px;
+    font-weight: 600;
+
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.announcement-status i {
+    font-size: 6px;
+}
+
+    .message-list {
+      max-width: 700px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+.text-card {
+    position: relative;
+
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 25px 20px 25px 28px;
+
+    color: #ffffff;
+    background: transparent;
+
+    line-height: 1.7;
+    overflow-wrap: break-word;
+
+    /* Remove the old full border */
+    border: none;
+
+    /* Optional subtle background */
+    border-radius: 4px;
+
+    box-shadow: none;
+}
+
+
+/* =========================
+   LEFT DOUBLE LINES
+========================= */
+
+.text-card::before,
+.text-card::after {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    bottom: 0;
+
+    width: 2px;
+
+    border-radius: 10px;
+
+    background: #008cff;
+
+    box-shadow:
+        0 0 8px rgba(0, 140, 255, 0.45);
+}
+
+
+/* First line */
+.text-card::before {
+    left: 5px;
+}
+
+
+/* Second line */
+.text-card::after {
+    left: 11px;
+}
+
+    .text-card p {
+      margin: 0;
+      color: #ffffff;
+      font-size: 1rem;
+      white-space: pre-wrap;
+    }
+
+    .message-time {
+      margin-top: 14px;
+      font-size: 0.78rem;
+      color: rgba(180, 210, 255, 0.65);
+      text-align: right;
+    }
+
+    .empty-state,
+    .loading-state {
+      max-width: 700px;
+      margin: 0 auto;
+      color: rgba(255, 255, 255, 0.55);
+      text-align: center;
+      padding: 20px;
+    }
+  </style>
+
+
+  <div class="page-header">
+    <div class="announcement-header">
+        <div class="announcement-icon">
+            <i class="fa-solid fa-bullhorn"></i>
+        </div>
+
+        <div class="announcement-heading">
+            <h2>Announcements</h2>
+            <p>Stay updated with the latest news and important updates.</p>
+        </div>
+
+        <span class="announcement-status">
+            <i class="fa-solid fa-circle"></i>
+            Updates
+        </span>
+    </div>
+  </div>
+
+  <div id="message-list" class="message-list">
+    <p class="loading-state">Loading messages...</p>
+  </div>
+
+
+  <script type="module">
+
+    // ==================================================
+    // FIREBASE
+    // ==================================================
+
+    import {
+        initializeApp
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+
+    import {
+        getFirestore,
+        collection,
+        query,
+        orderBy,
+        onSnapshot
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+    // ==================================================
+    // YOUR FIREBASE CONFIG
+    // ==================================================
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCywqYls2mJfY9maHRhsHRTP6OmPgC1Kf0",
+        authDomain: "x-shopping-6611d.firebaseapp.com",
+        projectId: "x-shopping-6611d",
+        storageBucket: "x-shopping-6611d.firebasestorage.app",
+        messagingSenderId: "177602183210",
+        appId: "1:177602183210:web:011c708002426b37cb8353",
+        measurementId: "G-QKLP9H1N9P"
+    };
+
+
+    // ==================================================
+    // INITIALIZE FIREBASE
+    // ==================================================
+
+    const app = initializeApp(firebaseConfig);
+
+    const db = getFirestore(app);
+
+
+    // ==================================================
+    // LISTEN FOR BROADCAST MESSAGES
+    // Ordered newest first, so the latest message
+    // is always the top card on the page.
+    // ==================================================
+
+    const broadcastsQuery = query(
+        collection(db, "broadcasts"),
+        orderBy("createdAt", "desc")
+    );
+
+
+    onSnapshot(
+
+        broadcastsQuery,
+
+        (snapshot) => {
+
+            const list =
+                document.getElementById("message-list");
+
+
+            if (snapshot.empty) {
+
+                list.innerHTML =
+                    '<p class="empty-state">No announcements yet.</p>';
+
+                return;
+            }
+
+
+            list.innerHTML = "";
+
+
+            snapshot.forEach((docSnap) => {
+
+                const data = docSnap.data();
+
+                const card =
+                    document.createElement("div");
+
+                card.className = "text-card";
+
+                card.innerHTML = `
+                    <p style="
+
+  color:white;
+  font-family:sans-serif;
+  font-size:14px;
+  line-height:1.4;
+  padding:8px 12px;
+  border-radius:8px;
+  max-width:100%;
+  margin:4px 0;
+  box-shadow:0 1px 1px rgba(0,0,0,0.1);
+  word-wrap:break-word;
+">${escapeHtml(data.message || "")}</p>
+                    <div class="message-time">${formatTime(data.createdAt)}</div>
+                `;
+
+                list.appendChild(card);
+
+            });
+
+        },
+
+
+        (error) => {
+
+            console.error(
+                "Firestore error:",
+                error
+            );
+
+            document.getElementById(
+                "message-list"
+            ).innerHTML =
+                '<p class="empty-state">Failed to load messages.</p>';
+
+        }
+
+    );
+
+
+    // ==================================================
+    // FORMAT FIRESTORE TIMESTAMP
+    // ==================================================
+
+    function formatTime(timestamp) {
+
+        if (!timestamp) {
+
+            // serverTimestamp() is briefly null
+            // right after a message is sent, before
+            // the server has confirmed the write.
+            return "Sending...";
+
+        }
+
+
+        if (
+            typeof timestamp.toDate === "function"
+        ) {
+
+            return timestamp
+                .toDate()
+                .toLocaleString();
+
+        }
+
+
+        return timestamp;
+
+    }
+
+
+    // ==================================================
+    // ESCAPE MESSAGE TEXT BEFORE INSERTING AS HTML
+    // (messages come from the admin panel, so this
+    // avoids any stray HTML/script being rendered)
+    // ==================================================
+
+    function escapeHtml(text) {
+
+        const div =
+            document.createElement("div");
+
+        div.textContent = text;
+
+        return div.innerHTML;
+
+    }
+
+  </script>
+
+
+
+    
+
+
+      <!-- ========= BOTTOM NAV ========= -->
+  <nav class="nav">
+    <a href="landing.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <ellipse cx="12" cy="5" rx="8" ry="3"/>
+        <path d="M4 5v4c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/>
+        <path d="M4 9v4c0 1.66 3.58 3 8 3s8-1.34 8-3V9"/>
+        <path d="M4 13v4c0 1.66 3.58 3 8 3s8-1.34 8-3v-4"/>
+      </svg>
+      Home
+    </a>
+    <a href="raffle.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <rect x="3" y="3" width="8" height="8" rx="1.5"/>
+        <rect x="13" y="3" width="8" height="8" rx="1.5"/>
+        <rect x="3" y="13" width="8" height="8" rx="1.5"/>
+        <rect x="13" y="13" width="8" height="8" rx="1.5"/>
+      </svg>
+      Raffle
+    </a>
+    <a href="#" class="active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round">
+        <path d="M9 3.5h9a2.5 2.5 0 0 1 2.5 2.5v4.5a2.5 2.5 0 0 1-2.5 2.5h-1v3.2l-3.2-3.2h-1.3"/>
+        <path d="M4.5 8h8A2.5 2.5 0 0 1 15 10.5v4a2.5 2.5 0 0 1-2.5 2.5H8l-4 3.2V17H4.5A2.5 2.5 0 0 1 2 14.5v-4A2.5 2.5 0 0 1 4.5 8z"/>
+      </svg>
+      chats
+    </a>
+    <a href="ai.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <rect x="6.5" y="6.5" width="11" height="11" rx="2"/>
+        <rect x="10" y="10" width="4" height="4" rx="1"/>
+        <path d="M9.5 6.5V3.5M12 6.5V3.5M14.5 6.5V3.5M9.5 20.5v-3M12 20.5v-3M14.5 20.5v-3"/>
+        <path d="M6.5 9.5h-3M6.5 12h-3M6.5 14.5h-3M20.5 9.5h-3M20.5 12h-3M20.5 14.5h-3"/>
+      </svg>
+      AI
+    </a>
+    <a href="bitcoin-income.html">
+      <svg viewBox="0 0 24 24">
+        <line x1="9" x2="9" y1="4" y2="21" stroke="currentColor" stroke-width="2.2"/>
+        <line x1="13" x2="13" y1="4" y2="21" stroke="currentColor" stroke-width="2.2"/>
+        <text x="11.8" y="18.2" text-anchor="middle" font-size="17" font-weight="800"
+              font-family="Arial,Helvetica,sans-serif" fill="currentColor">B</text>
+      </svg>
+      Income
+    </a>
+    <a href="user-account.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <circle cx="12" cy="7.5" r="4"/>
+        <path d="M4.5 20.5c0-4 3.5-6.7 7.5-6.7s7.5 2.7 7.5 6.7"/>
+      </svg>
+      My
+    </a>
+  </nav>
+    <div style="padding-bottom: 45px;"></div>
+    
+
+<script type="module" src="authication.js"></script>
+<script type="module">
+  requireLogin();
+</script>
+    <script src="wave-background.js"></script>
+  </body>
+</html>
+    

@@ -1,0 +1,326 @@
+<!DOCTYPE html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1"><meta name=google content=notranslate><meta name=msapplication-TileColor content=#000000><meta name=theme-color content=#ffffff><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><title>Future Ai Hub</title><script>document.addEventListener('DOMContentLoaded', function() {
+                document.documentElement.style.fontSize = document.documentElement.clientWidth / 20 + 'px'
+            })</script><script src=./static/uni.webview.js></script><script>// 待触发 `UniAppJSBridgeReady` 事件后，即可调用 uni 的 API。
+			document.addEventListener('UniAppJSBridgeReady', function() {
+				console.log('UniAppJSBridgeReady');
+				webUni.getEnv(function(res) {
+					
+				});
+			});</script><link rel=stylesheet href=./static/index.883130ca.css></head><body><noscript><strong>Please enable JavaScript to continue.</strong></noscript><div class=waves></div><div id=app></div><script src=./static/js/chunk-vendors.395c67ec.js></script><script src=./static/js/index.a822f0e6.js></script></body><link href="wave-background.css" rel="stylesheet" scoped>
+  
+  <body>
+
+<!----LOGIN HTTML PAGE-->
+<div id="authPage">
+  <style>
+    #authPage,
+    #authPage *{
+      box-sizing:border-box;
+    }
+
+    #authPage{
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+      
+      min-height:100vh;
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+    }
+
+    #authPage .auth-card{
+      background-color: #11151c; /* Very dark slate/blue background */
+      box-shadow: 0 0 15px 3px rgba(30, 161, 246, 0.4); /* Neon blue outer glow */
+      width:100%;
+      max-width:400px;
+      border-radius:12px;
+      border: 1px solid #1c7bb5;
+      box-shadow:0 2px 12px rgba(0,0,0,.08);
+      padding:32px;
+    }
+
+    #authPage h1.auth-title{
+      font-size:20px;
+      margin:0 0 4px;
+    }
+
+    #authPage p.auth-sub{
+      font-size:13px;
+      color:#777;
+      margin:0 0 24px;
+    }
+
+    #authPage .auth-tabs{
+      display:flex;
+      background:#eef0f3;
+      border-radius:8px;
+      padding:4px;
+      margin-bottom:24px;
+    }
+
+    #authPage .auth-tabs button{
+      flex:1;
+      border:0;
+      background:transparent;
+      padding:9px;
+      border-radius:6px;
+      font-size:14px;
+      font-weight:600;
+      color:#666;
+      cursor:pointer;
+    }
+
+    #authPage .auth-tabs button.auth-active{
+      background:#666;
+      color:white;
+      box-shadow:0 1px 3px rgba(0,0,0,.1);
+    }
+
+    #authPage form.auth-form{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    #authPage .auth-form label{
+      font-size:13px;
+      font-weight:600;
+      color:white;
+    }
+
+    #authPage .auth-form input{
+      width:100%;
+      border:1px solid #d9dce1;
+      border-radius:8px;
+      padding:11px 13px;
+      font-size:14px;
+      outline:none;
+    }
+
+    #authPage .auth-form input:focus{
+      border-color:#2563eb;
+      box-shadow:0 0 0 3px rgba(37,99,235,.12);
+    }
+
+    #authPage .auth-field{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+
+    #authPage .auth-captcha{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      background:#f7f8fa;
+      border:1px solid #d9dce1;
+      border-radius:8px;
+      padding:11px 13px;
+    }
+
+    #authPage .auth-captcha .auth-code{
+      font-family:monospace;
+      font-size:18px;
+      font-weight:700;
+      letter-spacing:3px;
+      color:#333;
+      background:#eef0f3;
+      padding:6px 12px;
+      border-radius:6px;
+      user-select:none;
+    }
+
+    #authPage .auth-captcha input{
+      flex:1;
+      border:1px solid #d9dce1;
+      background:#fff;
+      min-width:0;
+    }
+
+    #authPage .auth-captcha .auth-refresh{
+      border:0;
+      background:transparent;
+      cursor:pointer;
+      font-size:18px;
+      color:#666;
+      padding:0;
+      flex:none;
+    }
+
+    #authPage .auth-captcha .auth-refresh:hover{
+      color:#2563eb;
+    }
+
+    #authPage .auth-btn{
+      background:#2563eb;
+      color:#fff;
+      border:0;
+      border-radius:8px;
+      padding:12px;
+      font-size:15px;
+      font-weight:600;
+      cursor:pointer;
+    }
+
+    #authPage .auth-btn:hover{
+      background:#1d4ed8;
+    }
+
+    #authPage .auth-forgot{
+      font-size:12.5px;
+      color:#2563eb;
+      text-align:right;
+      text-decoration:none;
+      margin-top:-6px;
+    }
+
+    #authPage .auth-msg{
+      font-size:13px;
+      font-weight:600;
+      text-align:center;
+    }
+
+    #authPage .auth-msg.auth-ok{
+      color:#16a34a;
+    }
+
+    #authPage .auth-msg.auth-err{
+      color:#dc2626;
+    }
+
+    #authPage .auth-switch{
+      font-size:13px;
+      color:#666;
+      text-align:center;
+      margin-top:4px;
+    }
+
+    #authPage .auth-switch a{
+      color:#2563eb;
+      text-decoration:none;
+      font-weight:600;
+      cursor:pointer;
+    }
+
+    #authPage .auth-hidden{
+      display:none !important;
+    }
+  </style>
+
+  <div class="auth-card">
+    <h1 class="auth-title">Welcome</h1>
+    <p class="auth-sub">Create an account or sign in.</p>
+
+    <div class="auth-tabs">
+      <button id="authTabSignup" class="auth-active" type="button">Sign Up</button>
+      <button id="authTabLogin" type="button">Log In</button>
+    </div>
+
+    <!-- SIGNUP -->
+    <form id="authSignupForm" class="auth-form">
+      <div class="auth-field">
+        <label for="authSName">Phone Number</label>
+        <input type="text" id="authSName" placeholder="Your phone number is required" required>
+      </div>
+
+      <div class="auth-field">
+        <label for="authSpass">Password</label>
+        <input type="password" id="authSpass" placeholder="Type in your password" required>
+      </div>
+
+      <div class="auth-field">
+        <label for="authSPass">Retype Password</label>
+        <input type="password" id="authSPass" placeholder="Confirm your password" required>
+      </div>
+
+      <div class="auth-field">
+        <label for="authSCaptcha">Verify you are not a robot</label>
+        <div class="auth-captcha">
+          <span class="auth-code" id="authSCode"></span>
+          <input type="text" id="authSCaptcha" placeholder="Type the code" required>
+          <button type="button" class="auth-refresh" title="New code" onclick="authNewCode('authSCode')">↻</button>
+        </div>
+      </div>
+
+      <button class="auth-btn" type="submit">Sign Up</button>
+      <div class="auth-msg" id="authSMsg"></div>
+    </form>
+
+    <!-- LOGIN -->
+<!-- LOGIN -->
+<form id="authLoginForm" class="auth-form auth-hidden">
+
+  <div class="auth-field">
+    <label for="authLEmail">Phone Number</label>
+    <input
+      type="text"
+      id="authLEmail"
+      placeholder="Your phone number"
+      required
+    >
+  </div>
+
+  <div class="auth-field">
+    <label for="authLPass">Password</label>
+    <input
+      type="password"
+      id="authLPass"
+      placeholder="Your password"
+      required
+    >
+  </div>
+
+  <div class="auth-field">
+    <label for="authLCaptcha">Verify you are not a robot</label>
+
+    <div class="auth-captcha">
+      <span class="auth-code" id="authLCode"></span>
+
+      <input
+        type="text"
+        id="authLCaptcha"
+        placeholder="Type the code"
+        required
+      >
+
+      <button
+        type="button"
+        class="auth-refresh"
+        title="New code"
+        onclick="authNewCode('authLCode')"
+      >↻</button>
+    </div>
+  </div>
+
+  <button class="auth-btn" type="submit">
+    Log In
+  </button>
+
+  <a class="auth-forgot" href="#">
+    Forgot password?
+  </a>
+
+  <div class="auth-msg" id="authLMsg"></div>
+
+</form>
+
+    <div class="auth-switch" id="authSwitchText">
+      Already have an account? <a id="authToLogin">Log in</a>
+    </div>
+  </div>
+</div>
+  
+  
+
+
+
+
+
+
+<script type="module" src="authication.js"></script>
+
+  <script src="wave-background.js"></script>
+  
+</body>
+</html>

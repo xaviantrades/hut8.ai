@@ -1,0 +1,13 @@
+{
+    "name":"hut8.ai",
+    "version":"1.0.0",
+    "private":"true",
+    "script": {
+        "start":"node server.js"
+    },
+    "dependencies":{
+        "express":"^5.1.0",
+        "express-session":"^1.18.2",
+        "firebase-admin":"^13.0.0"
+    }
+}

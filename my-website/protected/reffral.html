@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invite & Earn</title>
+  <script>
+    function returnHome() {
+      window.location.href = "user-account.html";
+    }
+  </script>
+    <style>
+        /* =========================
+           BASE & LAYOUT STYLES
+        ========================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: black; /* Deep dark background */
+            color: #f8fafc;
+            display: flex;
+            justify-content: center;
+            /* Allow vertical scrolling, prevent horizontal */
+            max-width: 100%;
+            overflow-x: hidden; 
+            padding: 5px;
+        }
+
+        .mobile-container {
+            width: 100%;
+            max-width: 400px; /* Mobile-first constraint */
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* =========================
+           CARD & SECTION STYLES
+        ========================== */
+        .card {
+            
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .header-title {
+            
+            font-size: 30px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 5px;
+          
+        }
+
+        .header-subtitle {
+            
+            font-size: 13px;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        /* --- Stats Grid --- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-box {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .money-text {
+            color: #10b981; /* Emerald Green */
+        }
+
+        /* --- Progress Bar --- */
+        .progress-container {
+            margin-bottom: 20px;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 5%; /* E.g., 3 out of 5 referrals */
+            background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        /* --- Link & Actions --- */
+        .link-box {
+            display: flex;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .link-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            padding: 12px 15px;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .copy-btn {
+            background: #1e293b;
+            color: #10b981;
+            border: none;
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .copy-btn:active {
+            background: #0f172a;
+        }
+
+        .share-btn {
+            width: 100%;
+            background: linear-gradient(90deg, #1685ff 0%, #0056cc 100%);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(22, 133, 255, 0.3);
+            transition: transform 0.1s;
+        }
+
+        .share-btn:active {
+            transform: scale(0.97);
+        }
+
+        /* --- How It Works --- */
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #ffffff;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 8px;
+        }
+
+        .steps-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .step-number {
+            background: rgba(22, 133, 255, 0.2);
+            color: #1685ff;
+            min-width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .step-text h4 {
+            font-size: 0.95rem;
+            margin-bottom: 3px;
+        }
+
+        .step-text p {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            line-height: 1.4;
+        }
+
+        /* --- Live Earnings Ticker --- */
+        .ticker-container {
+            max-height: 200px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            /* Hide scrollbar for clean look */
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        .ticker-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .ticker-item {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            animation: slideIn 0.4s ease-out;
+        }
+
+        .ticker-user {
+            color: #cbd5e1;
+        }
+
+        .ticker-amount {
+            color: #10b981;
+            font-weight: 700;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+      
+/* =========================
+   HEADER
+========================== */
+.deposit-header {
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.deposit-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+}
+.back-btn {
+    position: absolute;
+    left: 2px;
+    top: 13px;
+    width: 25px;
+    height: 25px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.back-btn::before {
+    content: "";
+    position: absolute;
+    width: 13px;
+    height: 13px;
+    border-left: 2px solid white;
+    border-bottom: 2px solid white;
+    transform: rotate(45deg);
+    left: 5px;
+    top: 5px;
+}
+    </style>
+  
+</head>
+<body>
+
+    <div class="mobile-container">
+      
+        <!-- HEADER -->
+        <div class="deposit-header">
+
+            <button class="back-btn" onclick="returnHome()"></button>
+
+            <div class="deposit-title">
+                Invite & Earn
+            </div>
+
+        </div>
+        
+        <!-- MAIN DASHBOARD CARD -->
+        <div class="card">
+            
+            <p class="header-subtitle">Build your team and earn daily commissions. 
+            Share your reffral LINK to Friend and Family and Enjoy  <span style="
+    font-size: 15px;
+    font-weight: 600;
+    color: #00e676;
+    letter-spacing: 0.5px;">UGX 5,000</span> per refferals made through your link</p>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-label">Referral Balance</div>
+                    <div class="stat-value money-text">UGX 0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Total Referrals</div>
+                    <div class="stat-value">0</div>
+                </div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-text">
+                    <span>Reward Progress</span>
+                    <span class="money-text">0 / 5 Users</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill"></div>
+                </div>
+                <p style="font-size: 0.75rem; color: #64748b; margin-top: 8px; text-align: center;">
+                    Invite 5  friends to unlock a <strong>UGX 50,000</strong> bonus!
+                </p>
+            </div>
+
+            <div class="link-box">
+                <input type="text" class="link-input" id="referral-link" value="https://investinginai.online" readonly>
+                <button class="copy-btn" id="copy-btn" onclick="copyLink()">COPY</button>
+            </div>
+
+            <button class="share-btn" onclick="shareLink()">SHARE LINK</button>
+        </div>
+
+        <!-- HOW IT WORKS CARD -->
+        <div class="card">
+            <h2 class="section-title">How it works</h2>
+            <ul class="steps-list">
+                <li class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-text">
+                        <h4>Share your link</h4>
+                        <p>Send your unique invite link to friends via WhatsApp, Telegram, or SMS.</p>
+                    </div>
+                </li>
+                <li class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-text">
+                        <h4>Friends join & deposit</h4>
+                        <p>When they register and make their first successful deposit using MTN or Airtel.</p>
+                    </div>
+                </li>
+                <li class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-text">
+                        <h4>You earn commissions</h4>
+                        <p>Get a direct percentage cut paid instantly to your available withdrawal balance.</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- LIVE EARNINGS TICKER CARD -->
+        <div class="card">
+            <h2 class="section-title">Recent Earnings</h2>
+            <div class="ticker-container" id="earnings-ticker">
+                <!-- Javascript will inject items here -->
+            </div>
+        </div>
+
+    </div>
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+    <script>
+        // --- 1. Copy Link Functionality ---
+        function copyLink() {
+            const linkInput = document.getElementById('referral-link');
+            const copyBtn = document.getElementById('copy-btn');
+            
+            linkInput.select();
+            linkInput.setSelectionRange(0, 99999); // For mobile devices
+            navigator.clipboard.writeText(linkInput.value);
+            
+            // Visual feedback
+            const originalText = copyBtn.innerText;
+            copyBtn.innerText = 'COPIED!';
+            copyBtn.style.color = '#ffffff';
+            
+            setTimeout(() => {
+                copyBtn.innerText = originalText;
+                copyBtn.style.color = '#10b981';
+            }, 2000);
+        }
+
+        // --- 2. Share Functionality (Uses Web Share API on mobile) ---
+        function shareLink() {
+            const link = document.getElementById('referral-link').value;
+            const shareData = {
+                title: 'Join my AI Trading Team',
+                text: 'Register using my link to start earning daily returns!',
+                url: link
+            };
+
+            if (navigator.share) {
+                navigator.share(shareData).catch(console.error);
+            } else {
+                // Fallback if browser doesn't support Web Share API
+                alert('Web Share not supported on this browser. Please use the COPY button instead.');
+            }
+        }
+
+        // --- 3. Randomized UGX Earnings Ticker ---
+        const tickerContainer = document.getElementById('earnings-ticker');
+        const networkPrefixes = ['077', '078', '076', '075', '070', '074']; // MTN & Airtel prefixes
+
+        // Generate a random Ugandan phone number format (e.g., 077****892)
+        function generateRandomPhone() {
+            const prefix = networkPrefixes[Math.floor(Math.random() * networkPrefixes.length)];
+            const lastThree = Math.floor(100 + Math.random() * 900); // 3 random digits
+            return `${prefix}****${lastThree}`;
+        }
+
+        // Generate a random UGX commission amount
+        function generateRandomAmount() {
+            // Random amount between 2,000 and 50,000, rounded to nearest 500
+            let amount = Math.floor(Math.random() * (50000 - 2000 + 1) + 2000);
+            amount = Math.round(amount / 500) * 500;
+            return `UGX ${amount.toLocaleString()}`;
+        }
+
+        // Create and prepend a new ticker item to the DOM
+        function addTickerItem(isInitialLoad = false) {
+            const div = document.createElement('div');
+            div.className = 'ticker-item';
+            
+            const phone = generateRandomPhone();
+            const amount = generateRandomAmount();
+            
+            div.innerHTML = `
+                <span class="ticker-user">User ${phone} earned</span>
+                <span class="ticker-amount">${amount}</span>
+            `;
+
+            // Add to the top of the list
+            tickerContainer.prepend(div);
+
+            // Keep the list from growing indefinitely (max 10 items)
+            if (tickerContainer.children.length > 10) {
+                tickerContainer.removeChild(tickerContainer.lastChild);
+            }
+        }
+
+        // Initialize with 4 items immediately
+        for(let i = 0; i < 4; i++) {
+            addTickerItem(true);
+        }
+
+        // Add a new random earning every 3.5 seconds to make the page feel "alive"
+        setInterval(() => {
+            addTickerItem();
+        }, 3500);
+
+    </script>
+</body>
+</html>

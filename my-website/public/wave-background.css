@@ -1,0 +1,402 @@
+/**
+.waves {
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    pointer-events: none;
+}
+
+**/
+
+
+
+html,body {
+      
+			height:100%;
+		  background:#000;
+		}
+		body {
+			margin:0;
+		}
+		canvas {
+			display:block;
+		}
+		.waves {
+			position:fixed;
+			left:0;
+			top:0;
+			right:0;
+			bottom:0;
+      pointer-events: none;
+		}
+		/deep/ .uni-modal .uni-modal__title {
+			font-size: 10px !important;
+		}
+
+ /* ---------- HEADER ---------- */
+  header{
+    display:flex;justify-content:space-between;align-items:flex-start;
+    padding:10px;background:#000;
+  }
+  header h1{
+    font-family:Georgia,'Times New Roman',serif;
+    font-size:26px;font-weight:700;color:#f2f2f2;letter-spacing:.3px;
+  }
+  .bellbox{display:flex;flex-direction:column;align-items:center;margin-top:2px}
+  .bellwrap{position:relative;line-height:0}
+  .badge{
+    position:absolute;top:-7px;right:-8px;
+    background:#e53935;color:#fff;font-size:10px;font-weight:700;
+    min-width:17px;height:17px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;line-height:1;
+  }
+  .belllabel{font-size:12.5px;color:#e8e8e8;margin-top:3px}
+
+  /* ---------- BOTTOM NAV ---------- */
+  .nav{
+    position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+    
+    width:100%;max-width:480px;background:#030303;
+    border-top:1px solid #161616;display:flex;padding:9px 4px 12px;
+  }
+  .nav a{
+    flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;
+    color:#d8d8d8;font-size:11.5px;text-decoration:none;
+  }
+  .nav a.active{color:#37c0ef}
+  .nav svg{width:25px;height:25px;display:block}
+
+  /* ---------- BANNER ---------- */
+.slider{
+    width:100%;
+    height:220px;
+    overflow:hidden;
+}
+
+
+.track{
+    display:flex;
+    height:100%;
+    animation:slide 30s infinite;
+}
+
+
+.slide{
+    min-width:100vw;
+    height:220px;
+    position:relative;
+}
+
+
+.slide img{
+
+    width:100%;
+    height:100%;
+    object-fit:cover;
+
+}
+
+
+/* Text overlay */
+.caption{
+    box-sizing: border-box;
+    position:absolute;
+    bottom:0;
+    left:0;
+    width:100%;
+    padding:20px 25px;
+    color:white;
+    font-size:17px;
+    font-weight:600;
+    text-align:center; /* if you want it centered */
+    background: linear-gradient(transparent, rgba(0,0,0,0.85));
+    text-shadow: 2px 2px 5px black, -1px -1px 3px black;
+    z-index: 2; /* sits above image/video */
+}
+
+/* Smooth infinite movement */
+
+@keyframes slide{
+
+
+0%{
+transform:translateX(0);
+}
+
+
+15%{
+transform:translateX(0);
+}
+
+
+20%{
+transform:translateX(-100vw);
+}
+
+
+35%{
+transform:translateX(-100vw);
+}
+
+
+40%{
+transform:translateX(-200vw);
+}
+
+
+55%{
+transform:translateX(-200vw);
+}
+
+
+60%{
+transform:translateX(-300vw);
+}
+
+
+75%{
+transform:translateX(-300vw);
+}
+
+
+80%{
+transform:translateX(-400vw);
+}
+
+
+95%{
+transform:translateX(-400vw);
+}
+
+
+100%{
+transform:translateX(-500vw);
+}
+
+
+}
+
+    /* =========================================
+       STAT CARDS 
+       ========================================= */
+    
+    .stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        /* HOW TO REDUCE SPACE BETWEEN CARDS: Change 'gap' to a smaller number (e.g., 5px) */
+        gap: 10px; 
+        /* HOW TO RESIZE CONTAINER SPACING: Adjust padding (top right/left bottom) */
+        padding: 12px 10px 0;
+    }
+
+    .stats3 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 8px; /* Space between the 3 cards */
+        padding: 10px 15px 0;
+        margin-bottom: 20px;
+    }
+
+    .card {
+        background: #1d1f23;
+        border-radius: 5px;
+        overflow: hidden;
+        text-align: center;
+    }
+
+    .card .num {
+        /* HOW TO REDUCE SPACE INSIDE CARD: Lower the first number (12px) for less top/bottom padding */
+        padding: 12px 4px; 
+        /* HOW TO RESIZE NUMBER TEXT: Change font-size here */
+        font-size: 15px; 
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        color: lightgreen;
+    }
+
+    .card .lab {
+        background: linear-gradient(180deg, #2e64d8, #1f49ad);
+        /* HOW TO REDUCE SPACE AROUND LABEL TEXT: Lower the padding values here */
+        padding: 6px 2px; 
+        /* HOW TO RESIZE LABEL TEXT: Change font-size here */
+        font-size: 11.5px; 
+        color: #fff;
+        letter-spacing: 0.2px;
+    }
+
+    /* Specific overrides for the 3-column stats */
+    .stats3 .num {
+        font-size: 19px;
+        padding: 11px 4px; /* Adjust this to reduce space inside the top of the 3-column cards */
+    }
+    
+    .stats3 .lab {
+        font-size: 12.3px;
+        padding: 5px 1px; /* Adjust this to reduce space inside the label of the 3-column cards */
+    }
+
+    /* =========================================
+       MESSAGE PANEL 
+       ========================================= */
+
+    .message-box {
+        width: 95%;
+        max-width: 600px; /* Good practice for larger screens */
+        box-sizing: border-box;
+        padding: 8px 8px;
+        background: rgba(0, 15, 40, 0.85);
+        border: 2px solid #008cff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px #008cff, inset 0 0 20px rgba(0, 140, 255, .25);
+        color: white;
+        margin: 0 auto; /* Centers the box */
+    }
+
+    /* Header */
+    .header {
+        height: 30px;
+        padding: 0 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(0, 150, 255, .4);
+    }
+
+    .header h2 {
+        margin: 0;
+        font-size: 17px;
+        letter-spacing: 1px;
+    }
+
+    .header a {
+        color: white;
+        font-size: 16px;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    /* List Container */
+    .items {
+        padding: 18px;
+    }
+
+    .word-list {
+        height: 200px;
+        overflow-y: auto;
+        padding-right: 8px;
+    }
+
+    /* Scrollbar Styling */
+    .word-list::-webkit-scrollbar {
+        width: 6px;
+    }
+    .word-list::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    .word-list::-webkit-scrollbar-thumb {
+        background: #c4c7cc;
+        border-radius: 10px;
+    }
+    .word-list::-webkit-scrollbar-thumb:hover {
+        background: #999;
+    }
+
+    /* List Items */
+    .ite {
+        /* HOW TO REDUCE SPACE BETWEEN LIST ITEMS: Reduce height (e.g., 35px) and lower margin (e.g., 5px 0) */
+        height: 30px; 
+        margin: 10px 0; 
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid rgba(255,255,255,0.05); /* Optional: adds a faint line between items */
+    }
+
+    .ite:last-child {
+        border-bottom: none;
+    }
+
+    .text {
+        color: #00c8ff;
+        font-size: 15px;
+        font-weight: bold;
+    }
+
+    .dot {
+        width: 7px;
+        height: 7px;
+        background: #ff6f82;
+        border-radius: 50%;
+    }
+
+    /* Bottom More Indicator */
+    .bottom {
+        text-align: center;
+        color: #00c8ff;
+        font-size: 15px;
+        font-weight: bold;
+        padding-bottom: 10px;
+        cursor: pointer;
+    }
+
+    .arrow {
+        font-size: 20px;
+        line-height: 13px;
+        margin-bottom: 4px;
+    }
+
+
+
+/***
+SIGN AND LOGIN PAGE STYLINGS
+***/
+
+ h1{font-size:20px;margin-bottom:4px}
+  p.sub{font-size:13px;color:#777;margin-bottom:24px}
+  .tabsi{display:flex;background:#eef0f3;border-radius:8px;padding:4px;margin-bottom:24px}
+  .tabsi buttoni{
+    flex:1;border:0;background:transparent;padding:9px;border-radius:6px;
+    font-size:14px;font-weight:600;color:#666;cursor:pointer;
+  }
+  .tabsi buttoni.activei{background:#fff;color:#111;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+  formi{display:flex;flex-direction:column;gap:14px}
+  labeli{font-size:13px;font-weight:600;color:#333}
+  inputi{
+    width:100%;border:1px solid #d9dce1;border-radius:8px;padding:11px 13px;
+    font-size:14px;outline:none;
+  }
+  inputi:focus{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+  .fieldi{display:flex;flex-direction:column;gap:6px}
+  .captcha{display:flex;align-items:center;gap:12px;background:#f7f8fa;border:1px solid #d9dce1;border-radius:8px;padding:11px 13px}
+  .captcha .codei{
+    font-family:monospace;font-size:18px;font-weight:700;letter-spacing:3px;
+    color:#333;background:#eef0f3;padding:6px 12px;border-radius:6px;user-select:none;
+  }
+  .captcha inputi{flex:1;border:1px solid #d9dce1;background:#fff}
+  .captcha .refresh{
+    border:0;background:transparent;cursor:pointer;font-size:18px;color:#666;
+  }
+  .captcha .refreshi:hover{color:#2563eb}
+  .btni{
+    background:#2563eb;color:#fff;border:0;border-radius:8px;padding:12px;
+    font-size:15px;font-weight:600;cursor:pointer;
+  }
+  .btni:hover{background:#1d4ed8}
+  .forgoti{font-size:12.5px;color:#2563eb;text-align:right;text-decoration:none;margin-top:-6px}
+  .msgi{font-size:13px;font-weight:600;text-align:center}
+  .msgi.ok{color:#16a34a}.msg.err{color:#dc2626}
+  .switchi{font-size:13px;color:#666;text-align:center;margin-top:4px}
+  .switchi a{color:#2563eb;text-decoration:none;font-weight:600;cursor:pointer}
+  .hiddeni{display:none}
+  .cardi{
+    box-shadow: 0 0 15px 3px rgba(30, 161, 246, 0.4); /* Neon blue outer glow */
+  box-sizing: border-box;
+    background-color: #11151c; /* Very dark slate/blue background */
+  border-radius: 20px;
+  border: 1px solid #1c7bb5;
+  color: white;width:100%;max-width:400px;border-radius:12px;
+    padding:32px;
+  }

@@ -1,0 +1,1017 @@
+<!DOCTYPE html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1"><meta name=google content=notranslate><meta name=msapplication-TileColor content=#000000><meta name=theme-color content=#ffffff><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><title>User Acount Profile</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="allpoups.css">
+  
+<script src="full-screenlogic.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+                document.documentElement.style.fontSize = document.documentElement.clientWidth / 20 + 'px'
+            })</script><script src=./static/uni.webview.js></script><script>// 待触发 `UniAppJSBridgeReady` 事件后，即可调用 uni 的 API。
+			document.addEventListener('UniAppJSBridgeReady', function() {
+				console.log('UniAppJSBridgeReady');
+				webUni.getEnv(function(res) {
+					
+				});
+			});</script><link rel=stylesheet href=./static/index.883130ca.css>
+<script src=./static/js/chunk-vendors.395c67ec.js></script><script src=./static/js/index.a822f0e6.js></script><link href="wave-background.css" rel="stylesheet" scoped>
+  <link href="styles.css" rel="stylesheet">
+  <link rel="stylesheet" href="allpoups.css">
+  
+</head>
+  <body>
+  <noscript><strong>Please enable JavaScript to continue.</strong></noscript>
+    <div class=waves></div><div id=app></div>
+
+    
+<div id="allpopupOverlay" class="allpopup-overlay">
+    <div class="allpopup-alert">
+        <div id="allpopupText" class="allpopup-text"></div>
+
+        <button class="allpopup-close">
+            OK
+        </button>
+    </div>
+</div>
+
+    
+    <!--Hearder---->
+<div class="banner">
+    <div class="text-block">
+      <p class="title">Welcome Back !</p>
+      <div class="userinfo">
+        <span class="phone" id="phone-Owner"> Your Not Logged In</span>
+        <span class="anon" style="
+    display: inline-block;
+    padding: 3px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #00e676;
+    background: rgba(0, 230, 118, 0.1);
+    border: 1px solid #00e676;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+">Varified</span>
+      </div>
+    </div>
+
+    <div class="badge">
+      <div class="spokes"></div>
+    </div>
+  </div>
+
+    <!--ACCOUNT BALANCE SECTION--->
+
+<div class="card-con">
+  <div class="row row-2">
+    <div class="item">
+      <div class="tit">Deposit</div>
+      <div class="denom" id="total-deposited">0.00</div>
+    </div>
+    <div class="item">
+      <div class="tit">Balance</div>
+      <div class="denom" id="totalAccountBalance" >0.00</div>
+    </div>
+  </div>
+
+  <div class="row row-2">
+    <div class="item">
+      <div class="tit">Cryto Earnings</div>
+      <div class="denom" id="res-new-amount">0.00</div>
+    </div>
+    <div class="item">
+      <div class="tit">Withdraw</div>
+      <div class="denom">0.00</div>
+    </div>
+  </div>
+
+  <div class="row row-2">
+    <div class="item">
+      <div class="tit">AI Income</div>
+      <div class="denom" id="aiincomm">0.00</div>
+    </div>
+    <div class="item">
+      <div class="tit">Rewards and Bonus</div>
+      <div class="denom">UGX 5000.00</div>
+    </div>
+  </div>
+
+  <div class="row row-3">
+    <div class="item">
+      <div class="tit">Invite Count</div>
+      <div class="denom">0</div>
+    </div>
+    <div class="item">
+      <div class="tit">Team Count</div>
+      <div class="denom">0</div>
+    </div>
+    <div class="item">
+      <div class="tit">Team income</div>
+      <div class="denom">0.00</div>
+    </div>
+  </div>
+
+  <div class="chevron-icon">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#2ab1f5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="17 18 12 13 7 18"></polyline>
+      <polyline points="17 11 12 6 7 11"></polyline>
+    </svg>
+  </div>
+</div>
+
+    <!--ACTIONS TO BE DONE SECTION--->
+
+  <div class="menu-container">
+    <div class="menu-grid">
+      
+      <!-- Row 1 -->
+      <div class="menu-item">
+        <div class="icon-box" onclick="openDeposit()"><i class="fa-solid fa-wallet"></i></div>
+        <div class="menu-label">Deposit</div>
+      </div>
+      <div class="menu-item">
+        <div class="icon-box" onclick="openWithdraw()"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+        <div class="menu-label">Withdraw</div>
+      </div>
+      <div class="menu-item">
+        <a class="icon-box" href="history.html"><i class="fa-solid fa-money-check"></i></a>
+        <div class="menu-label">Investments</div>
+      </div>
+      <a class="menu-item" href="reffral.html">
+        <div class="icon-box"><i class="fa-solid fa-handshake"></i></div>
+        <div class="menu-label">Invite</div>
+      </a>
+
+      <!-- Row 2 -->
+      <div class="menu-item">
+        <div class="icon-box"  onclick="openMyteam()"><i class="fa-solid fa-users"></i></div>
+        <div class="menu-label">My team</div>
+      </div>
+      <div class="menu-item">
+        <div class="icon-box" onclick="openViptask()"><i class="fa-solid fa-star"></i></div>
+        <div class="menu-label">VIP Task</div>
+      </div>
+      <div class="menu-item">
+        <div class="icon-box" onclick="openReward()"><i class="fa-solid fa-gift"></i></div>
+        <div class="menu-label">Reward</div>
+      </div>
+      <a class="menu-item" href="raffle.html">
+        <div class="icon-box"><i class="fa-solid fa-certificate"></i></div>
+        <div class="menu-label">Raffle</div>
+      </a>
+
+      <!-- Row 3 -->
+      <div class="menu-item">
+        <div class="icon-box" onclick="openDownloadapp()"><i class="fa-solid fa-download"></i></div>
+        <div class="menu-label" >Download App</div>
+      </div>
+      <div class="menu-item">
+        <div class="icon-box" onclick="openManager()"><i class="fa-solid fa-headset"></i></div>
+        <div class="menu-label">Manager</div>
+      </div>
+      <div class="menu-item">
+        <a class="icon-box" href="bitcoin-income.html"><i class="fa-solid fa-user-gear"></i></a>
+        <div class="menu-label">Crypto </div>
+      </div>
+      
+      <!-- Empty 4th item to keep the grid aligned on the 3rd row -->
+      <div class="menu-item">
+        <div class="icon-box"onclick="logout()"><i class="fa-solid fa-sign-out-alt"></i></div>
+        <div class="menu-label">LogOut</div>
+      </div>
+
+    </div>
+  </div>
+
+    <!--CRYPTO CURRENCY---->
+    <div style="background-color: #11151c;border: 1px solid #1c7bb5;border-radius: 20px;
+      padding: 20px 10px;
+      width: 100%;box-shadow: 0 0 15px 3px rgba(30, 161, 246, 0.4); margin-bottom: 30px;" >
+      <div style="font-family: sans-serif;color: white; font-size:18px; font-weight: 600px;"> Cryptocurrency Potfolio</div>
+    <hr style="color: #1c7bb5;">
+      <div style="font-family: sans-serif;color: white; font-size:18px; font-weight: 600px" id="cryptoprice">0.00</div>
+    </div>
+
+    <!--LAST MONTH SUMMARY---->
+    <div style="background-color: #11151c;border: 1px solid #1c7bb5;border-radius: 20px;
+      padding: 35px 20px;
+      width: 100%;box-shadow: 0 0 15px 3px rgba(30, 161, 246, 0.4); margin-bottom: 30px;">
+      <div class="row row-2" style="text-align: center;">
+    <div class="item">
+      <div style="font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: rgba(255, 255, 255, 0.96);
+  margin-bottom: 6px;">Last month's Salary</div>
+      <div style="font-size: 38px;
+  font-weight: 800;
+  line-height: 1;
+  color: #ffffff;">0.00</div>
+    </div>
+    <div class="item">
+      <div style="font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: rgba(255, 255, 255, 0.96);
+  margin-bottom: 6px;">This month's Salary</div>
+      <div style="font-size: 38px;
+  font-weight: 800;
+  line-height: 1;
+  color: #ffffff;">0.00</div>
+    </div>
+      </div>
+     <div class="btndiv">
+          Get Last Month Salary
+     </div>
+    </div>
+
+    <!--LAST MONTH REWARD VS SUMMARY---->
+    
+<div class="reward-card">
+  <div class="reward-stats">
+    <div class="stat">
+      <div class="stat-title">Invited last month</div>
+      <div class="stat-value">0</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-title">Invited this month</div>
+      <div class="stat-value">0</div>
+    </div>
+  </div>
+
+  <button class="rewardd-btn" type="button" >
+    Get last month's reward
+  </button>
+
+  <div class="reward-table">
+    <div class="table-head">
+      <span>Invite</span>
+      <span>Reward</span>
+    </div>
+
+    <div class="table-row">
+      <span>6</span>
+      <span>Z-1</span>
+    </div>
+
+    <div class="table-row">
+      <span>15</span>
+      <span>Z-2</span>
+    </div>
+
+    <div class="table-row">
+      <span>30</span>
+      <span>Z-3</span>
+    </div>
+
+    <div class="table-row">
+      <span>60</span>
+      <span>Z-4</span>
+    </div>
+  </div>
+</div>
+     <!-- ========= BOTTOM NAV ========= -->
+  <nav class="nav">
+    <a href="landing.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <ellipse cx="12" cy="5" rx="8" ry="3"/>
+        <path d="M4 5v4c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/>
+        <path d="M4 9v4c0 1.66 3.58 3 8 3s8-1.34 8-3V9"/>
+        <path d="M4 13v4c0 1.66 3.58 3 8 3s8-1.34 8-3v-4"/>
+      </svg>
+      Home
+    </a>
+    <a href="raffle.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <rect x="3" y="3" width="8" height="8" rx="1.5"/>
+        <rect x="13" y="3" width="8" height="8" rx="1.5"/>
+        <rect x="3" y="13" width="8" height="8" rx="1.5"/>
+        <rect x="13" y="13" width="8" height="8" rx="1.5"/>
+      </svg>
+      Raffle
+    </a>
+    <a href="chats.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round">
+        <path d="M9 3.5h9a2.5 2.5 0 0 1 2.5 2.5v4.5a2.5 2.5 0 0 1-2.5 2.5h-1v3.2l-3.2-3.2h-1.3"/>
+        <path d="M4.5 8h8A2.5 2.5 0 0 1 15 10.5v4a2.5 2.5 0 0 1-2.5 2.5H8l-4 3.2V17H4.5A2.5 2.5 0 0 1 2 14.5v-4A2.5 2.5 0 0 1 4.5 8z"/>
+      </svg>
+      chats
+    </a>
+    <a href="ai.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <rect x="6.5" y="6.5" width="11" height="11" rx="2"/>
+        <rect x="10" y="10" width="4" height="4" rx="1"/>
+        <path d="M9.5 6.5V3.5M12 6.5V3.5M14.5 6.5V3.5M9.5 20.5v-3M12 20.5v-3M14.5 20.5v-3"/>
+        <path d="M6.5 9.5h-3M6.5 12h-3M6.5 14.5h-3M20.5 9.5h-3M20.5 12h-3M20.5 14.5h-3"/>
+      </svg>
+      AI
+    </a>
+    <a href="bitcoin-income.html">
+      <svg viewBox="0 0 24 24">
+        <line x1="9" x2="9" y1="4" y2="21" stroke="currentColor" stroke-width="2.2"/>
+        <line x1="13" x2="13" y1="4" y2="21" stroke="currentColor" stroke-width="2.2"/>
+        <text x="11.8" y="18.2" text-anchor="middle" font-size="17" font-weight="800"
+              font-family="Arial,Helvetica,sans-serif" fill="currentColor">B</text>
+      </svg>
+      Income
+    </a>
+    <a href="#" class="active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <circle cx="12" cy="7.5" r="4"/>
+        <path d="M4.5 20.5c0-4 3.5-6.7 7.5-6.7s7.5 2.7 7.5 6.7"/>
+      </svg>
+      My
+    </a>
+  </nav>
+    <div style="padding-bottom: 45px;"></div>
+    
+
+    
+
+
+
+
+
+<div id="withdrawOverlay" class="withdraw-overlay">
+
+    <div class="deposit-page">
+
+
+        <!-- HEADER -->
+        <div class="deposit-header">
+
+            <button class="back-btn" onclick="closeWindow()"></button>
+
+            <div class="deposit-title">
+                Withdraw
+            </div>
+
+        </div>
+
+
+        <!-- PAYMENT TABS -->
+        <div class="payment-tabs">
+
+            <div
+                id="momoTab"
+                class="payment-tab active"
+                onclick="showMomo()"
+            >
+                MTN / Airtel
+            </div>
+
+            <div
+                id="usdtTab"
+                class="payment-tab"
+                onclick="showUsdt()"
+            >
+                USDT
+            </div>
+
+        </div>
+
+
+
+        <!-- ===========================
+             MOBILE MONEY SECTION
+        ============================ -->
+        <div id="momoSection" class="momo-section active">
+
+            <!-- PHONE NUMBER -->
+            <div class="form-group">
+
+                <label class="form-label">
+                    MTN or Airtel number
+                </label>
+
+                <input
+                    type="tel"
+                    class="phone-input"
+                    id="phoneNumber"
+                    placeholder="0XXXXXXXXX MTN or Airtel number"
+                >
+
+            </div>
+
+
+            <!-- AMOUNT -->
+            <div class="form-group">
+
+                <div class="amount-row">
+
+                    <input
+                        type="number"
+                        class="amount-input"
+                        id="amountInput"
+                        placeholder="Please enter amount to withdraw"
+                        oninput="updateAmount()"
+                    >
+
+                    <div class="amount-display">
+                        UGX <span id="amountDisplay">0.00</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- NOTE -->
+            <div class="note-box">
+
+                <div class="note-title">
+                    Note:
+                </div>
+
+                <div class="note-text">
+                    Enter the phone number you are using to withdraw
+                    (MTN or Airtel) to receive your investment income.  A 6% WITHDRAWAL FEE WILL BE APPLIED. PAYMENTS ARE PROCESSED WITH IN 4-6 WORKING HOURS
+                  
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ===========================
+             USDT SECTION
+        ============================ -->
+        <div id="usdtSection" class="usdt-section">
+
+            <div class="form-group">
+
+                <label class="form-label">
+                    CRYPTO wallet address
+                </label>
+
+                <input
+                    type="text"
+                  
+                    class="phone-input"
+                    placeholder="Enter your USDT wallet address"
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <div class="amount-row">
+
+                    <input
+                        type="number"
+                        id="inputcrypt"
+                        class="amount-input"
+                        placeholder="Please enter USDT amount"
+                    >
+
+                    <div class="amount-display">
+                        CRYPTO
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="note-box">
+
+                <div class="note-title">
+                    Note:
+                </div>
+
+                <div class="note-text">
+                    Enter the USDT amount you want to withdraw
+                    and provide your wallet address.
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- DEPOSIT BUTTON -->
+        <button
+            class="deposit-submit"
+            id="withdrawl-btn"
+        >
+            Withdraw
+        </button>
+
+    </div>
+
+</div>
+
+    
+
+
+
+
+
+
+<div id="billOverlay" class="bill-overlay">
+
+    <div class="deposit-page" style="background: white;">
+
+
+        <!-- HEADER -->
+        <div class="deposit-header">
+
+            <button class="back-btn" onclick="closeWindow()"></button>
+
+            <div class="deposit-title">
+                BILL
+            </div>
+    </div>
+
+
+
+      
+</div>
+</div>
+
+
+<!-- ==================================================
+     FULL SCREEN INVITE PAGE
+================================================== -->
+
+<div id="inviteOverlay" class="invite-overlay">
+
+    <div class="deposit-page">
+
+
+        <!-- HEADER -->
+        <div class="deposit-header">
+
+            <button class="back-btn" onclick="closeWindow()"></button>
+
+            <div class="deposit-title">
+                REFFER AMD EARN
+            </div>
+
+        </div>
+
+
+        
+
+    </div>
+
+</div>
+
+
+<!-- ==================================================
+     FULL SCREEN MY TEAM PAGE
+================================================== -->
+
+<div id="myteamoverlay" class="myteam-overlay">
+
+    <div class="deposit-page">
+
+
+        <!-- HEADER -->
+        <div class="deposit-header">
+
+            <button class="back-btn" onclick="closeWindow()"></button>
+
+            <div class="deposit-title">
+                BACKGROUND CASH POOL
+            </div>
+
+        </div>
+
+
+        
+
+    </div>
+
+</div>
+
+
+<!-- ==================================================
+     FULL SCREEN VIP TASK PAGE
+================================================== -->
+
+<div id="vipOverlay" class="vip-overlay">
+
+    <div class="deposit-page">
+
+
+        <!-- HEADER -->
+        <div class="deposit-header">
+
+            <button class="back-btn" onclick="closeWindow()"></button>
+
+            <div class="deposit-title">
+                VIP OFFERS (EARN BIG)
+            </div>
+
+        </div>
+
+
+        
+
+    </div>
+
+</div>
+
+
+<!-- ==================================================
+     FULL SCREEN REWARD PAGE
+================================================== -->
+
+<div id="rewardOverlay" class="reward-overlay">
+
+    <div class="deposit-page">
+
+
+        <!-- HEADER -->
+        <div class="deposit-header">
+
+            <button class="back-btn" onclick="closeWindow()"></button>
+
+            <div class="deposit-title">
+                YOUR REWARDS
+            </div>
+
+        </div>
+
+
+        
+
+    </div>
+
+</div>
+
+
+<!-- ==================================================
+     FULL SCREEN RAFFLE PAGE
+================================================== -->
+
+<div id="raffleOverlay" class="raffle-overlay">
+
+    <div class="deposit-page">
+
+
+        <!-- HEADER -->
+        <div class="deposit-header">
+
+            <button class="back-btn" onclick="closeWindow()"></button>
+
+            <div class="deposit-title">
+                OUR RAFFLE
+            </div>
+
+        </div>
+
+
+        
+
+    </div>
+
+</div>
+
+
+<!-- ==================================================
+     FULL SCREEN DOWNLOAD APP PAGE
+================================================== -->
+
+<div id="appOverlay" class="downloadapp-overlay">
+
+    <div class="deposit-page">
+
+
+        <!-- HEADER -->
+        <div class="deposit-header">
+
+            <button class="back-btn" onclick="closeWindow()"></button>
+
+            <div class="deposit-title">
+                DOWNLOAD OUR APP 
+            </div>
+
+        </div>
+
+
+        
+
+    </div>
+
+</div>
+
+
+<!-- ==================================================
+     FULL SCREEN MANAGER PAGE
+================================================== -->
+
+<div id="manageOverlay" class="manage-overlay">
+
+    <div class="deposit-page">
+
+
+        <!-- HEADER -->
+        <div class="deposit-header">
+
+            <button class="back-btn" onclick="closeWindow()"></button>
+
+            <div class="deposit-title">
+                CONTACT US
+            </div>
+
+        </div>
+
+
+<style>
+
+    .contact-wrapper {
+        
+        width: 100%;
+        
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+    }
+
+  
+
+    
+
+    .header h1 {
+        font-size: 2.8rem;
+        margin-bottom: 10px;
+        color: white;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .header p {
+        font-size: 1.1rem;
+        color: #c8c8d8;
+        max-width: 650px;
+        margin: 0 auto;
+        line-height: 1.7;
+    }
+
+    .content {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+        
+    }
+
+    /* Email Highlight Card */
+    .email-highlight {
+        flex: 1 1 380px;
+        background: darkgreen;
+        border-radius: 20px;
+        padding: 40px 35px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 15px 40px rgba(234, 67, 53, 0.3);
+    }
+
+    .email-highlight::before {
+        content: "";
+        position: absolute;
+        top: -50px;
+        right: -50px;
+        width: 160px;
+        height: 160px;
+        
+        border-radius: 50%;
+    }
+
+    .email-highlight .icon {
+        font-size: 3rem;
+        margin-bottom: 18px;
+    }
+
+    .email-highlight h2 {
+        font-size: 1.6rem;
+        margin-bottom: 12px;
+    }
+
+    .email-highlight .fast-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        
+        padding: 6px 16px;
+        border-radius: 50px;
+        font-size: 0.85rem;
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+
+    .pulse-dot {
+        width: 10px;
+        height: 10px;
+        background: #4ade80;
+        border-radius: 50%;
+        box-shadow: 0 0 0 rgba(74, 222, 128, 0.7);
+        animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); }
+        70% { box-shadow: 0 0 0 12px rgba(74, 222, 128, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+    }
+
+    .email-highlight p {
+        line-height: 1.7;
+        margin-bottom: 25px;
+        color: #ffe6e3;
+    }
+
+    .email-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: #fff;
+        color: #d93025;
+        padding: 15px 30px;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 1.05rem;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .email-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .email-address {
+        margin-top: 18px;
+        font-size: 1rem;
+        opacity: 0.95;
+        word-break: break-all;
+    }
+
+    /* Other Channels */
+    .other-channels {
+        flex: 1 1 380px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .other-channels h3 {
+        font-size: 1.4rem;
+        margin-bottom: 8px;
+    }
+
+    .other-channels > p {
+        color: #b8b8cc;
+        margin-bottom: 25px;
+        line-height: 1.6;
+    }
+
+    .social-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .social-link {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        text-decoration: none;
+        color: #fff;
+        transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+        background: rgba(255, 255, 255, 0.14);
+        transform: translateY(-3px);
+    }
+
+    .social-link .s-icon {
+        font-size: 1.5rem;
+        width: 42px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        flex-shrink: 0;
+    }
+
+    .whatsapp .s-icon { background: #25D366; }
+    .linkedin .s-icon { background: #0A66C2; }
+    .twitter .s-icon  { background: #1DA1F2; }
+    .instagram .s-icon { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+    .facebook .s-icon { background: #1877F2; }
+    .telegram .s-icon { background: #0088cc; }
+
+    .social-link span.name {
+        font-weight: 600;
+        font-size: 0.95rem;
+    }
+
+    .social-link span.handle {
+        display: block;
+        font-size: 0.78rem;
+        color: #a8a8bc;
+    }
+
+    .footer-note {
+        text-align: center;
+        padding: 25px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        color: white;
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+        .header h1 { font-size: 2rem; }
+        .social-grid { grid-template-columns: 1fr; }
+    }
+</style>
+
+
+    <div class="contact-wrapper">
+        
+
+        <div class="content">
+            <!-- Email Highlight -->
+            <div class="email-highlight">
+                <div class="icon">✉️</div>
+                <div class="fast-tag">
+                    <span class="pulse-dot"></span>
+                    We reply in seconds
+                </div>
+                <h2>Email Us — Our Fastest Channel</h2>
+                <p>Prefer speed and precision? Email is the heartbeat of our communication. Drop us a message and get a lightning-fast, thoughtful response from our AI investment specialists — no waiting, no delays.</p>
+                <a href="investinginai55@gmail.com" class="email-btn">
+                    Send an Email Now
+                </a>
+                <div class="email-address">inveatinginai.online@gmail.com</div>
+            </div>
+
+          
+
+        <div class="footer-note">
+             <strong>investinginai.online</strong> — Smarter decisions. Faster returns. Investing in Artificial Intelligence and crypto.
+        </div>
+        </div>
+    </div>
+
+    </div>
+
+</div>
+
+<!-- ==================================================
+     FULL SCREEN SETTING PAGE
+================================================== -->
+
+<div id="settingOverlay" class="setting-overlay">
+
+    <div class="deposit-page">
+
+
+        <!-- HEADER -->
+        <div class="deposit-header">
+
+            <button class="back-btn" onclick="closeWindow()"></button>
+
+            <div class="deposit-title">
+                SETTINGS
+            </div>
+
+        </div>
+
+
+        
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+<script type="module" src="withdrawals.js"> </script>
+<script type="module" src="firestoreadminlogic.js"></script>
+
+<script type="module" src="authication.js"></script>
+<script type="module">
+  requireLogin();
+</script>
+<script src="wave-background.js"></script>
+      
+  </body>
+</html>
+    

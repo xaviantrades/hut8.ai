@@ -1,0 +1,203 @@
+<!DOCTYPE html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1"><meta name=google content=notranslate><meta name=msapplication-TileColor content=#000000><meta name=theme-color content=#ffffff><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><title>Future Ai Hub</title><script>document.addEventListener('DOMContentLoaded', function() {
+                document.documentElement.style.fontSize = document.documentElement.clientWidth / 20 + 'px'
+            })</script><script src=./static/uni.webview.js></script><script>// 待触发 `UniAppJSBridgeReady` 事件后，即可调用 uni 的 API。
+			document.addEventListener('UniAppJSBridgeReady', function() {
+				console.log('UniAppJSBridgeReady');
+				webUni.getEnv(function(res) {
+					
+				});
+			});</script><link rel=stylesheet href=./static/index.883130ca.css></head><body><noscript><strong>Please enable JavaScript to continue.</strong></noscript><div class=waves></div><div id=app></div><script src=./static/js/chunk-vendors.395c67ec.js></script><script src=./static/js/index.a822f0e6.js></script></body><link href="wave-background.css" rel="stylesheet" scoped>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    
+    min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;
+  }
+  .card{
+    box-shadow: 0 0 15px 3px rgba(30, 161, 246, 0.4); /* Neon blue outer glow */
+  box-sizing: border-box;
+    background-color: #11151c; /* Very dark slate/blue background */
+  border-radius: 20px;
+  border: 1px solid #1c7bb5;
+  color: white;width:100%;max-width:400px;border-radius:12px;
+    padding:32px;
+  }
+  h1{font-size:20px;margin-bottom:4px}
+  p.sub{font-size:13px;color:#777;margin-bottom:24px}
+  .tabs{display:flex;background:#eef0f3;border-radius:8px;padding:4px;margin-bottom:24px}
+  .tabs button{
+    flex:1;border:0;background:transparent;padding:9px;border-radius:6px;
+    font-size:14px;font-weight:600;color:#666;cursor:pointer;
+  }
+  .tabs button.active{background:#fff;color:#111;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+  form{display:flex;flex-direction:column;gap:14px}
+  label{font-size:13px;font-weight:600;color:#333}
+  input{
+    width:100%;border:1px solid #d9dce1;border-radius:8px;padding:11px 13px;
+    font-size:14px;outline:none;
+  }
+  input:focus{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+  .field{display:flex;flex-direction:column;gap:6px}
+  .captcha{display:flex;align-items:center;gap:12px;background:#f7f8fa;border:1px solid #d9dce1;border-radius:8px;padding:11px 13px}
+  .captcha .code{
+    font-family:monospace;font-size:18px;font-weight:700;letter-spacing:3px;
+    color:#333;background:#eef0f3;padding:6px 12px;border-radius:6px;user-select:none;
+  }
+  .captcha input{flex:1;border:1px solid #d9dce1;background:#fff}
+  .captcha .refresh{
+    border:0;background:transparent;cursor:pointer;font-size:18px;color:#666;
+  }
+  .captcha .refresh:hover{color:#2563eb}
+  .btn{
+    background:#2563eb;color:#fff;border:0;border-radius:8px;padding:12px;
+    font-size:15px;font-weight:600;cursor:pointer;
+  }
+  .btn:hover{background:#1d4ed8}
+  .forgot{font-size:12.5px;color:#2563eb;text-align:right;text-decoration:none;margin-top:-6px}
+  .msg{font-size:13px;font-weight:600;text-align:center}
+  .msg.ok{color:#16a34a}.msg.err{color:#dc2626}
+  .switch{font-size:13px;color:#666;text-align:center;margin-top:4px}
+  .switch a{color:#2563eb;text-decoration:none;font-weight:600;cursor:pointer}
+  .hidden{display:none}
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>Welcome</h1>
+    <p class="sub">Create an account or sign in.</p>
+
+    <div class="tabs">
+      <button id="tabSignup" class="active">Sign Up</button>
+      <button id="tabLogin">Log In</button>
+    </div>
+
+    <!-- SIGNUP -->
+    <form id="signupForm">
+      <div class="field">
+        <label>Name</label>
+        <input type="text" id="sName" placeholder="Your name" required>
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="sEmail" placeholder="you@example.com" required>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="sPass" placeholder="Min 6 characters" required>
+      </div>
+      <div class="field">
+        <label>Verify you are not a robot</label>
+        <div class="captcha">
+          <span class="code" id="sCode"></span>
+          <input type="text" id="sCaptcha" placeholder="Type the code" required>
+          <button type="button" class="refresh" title="New code" onclick="newCode('sCode')">↻</button>
+        </div>
+      </div>
+      <button class="btn" type="submit">Sign Up</button>
+      <div class="msg" id="sMsg"></div>
+    </form>
+
+    <!-- LOGIN -->
+    <form id="loginForm" class="hidden">
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="lEmail" placeholder="you@example.com" required>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="lPass" placeholder="Your password" required>
+      </div>
+      <div class="field">
+        <label>Verify you are not a robot</label>
+        <div class="captcha">
+          <span class="code" id="lCode"></span>
+          <input type="text" id="lCaptcha" placeholder="Type the code" required>
+          <button type="button" class="refresh" title="New code" onclick="newCode('lCode')">↻</button>
+        </div>
+      </div>
+      <button class="btn" type="submit">Log In</button>
+      <a class="forgot" href="#">Forgot password?</a>
+      <div class="msg" id="lMsg"></div>
+    </form>
+
+    <div class="switch" id="switchText">
+      Already have an account? <a id="toLogin">Log in</a>
+    </div>
+  </div>
+
+<script>
+  // Simple text CAPTCHA — no robot check
+  function newCode(id){
+    document.getElementById(id).textContent =
+      Math.random().toString(36).slice(2,7).toUpperCase();
+  }
+  newCode("sCode"); newCode("lCode");
+
+  // Tab switching (signup by default)
+  const tabSignup = document.getElementById("tabSignup");
+  const tabLogin = document.getElementById("tabLogin");
+  const signupForm = document.getElementById("signupForm");
+  const loginForm = document.getElementById("loginForm");
+  const switchText = document.getElementById("switchText");
+  const toLogin = document.getElementById("toLogin");
+
+  function showSignup(){
+    signupForm.classList.remove("hidden");
+    loginForm.classList.add("hidden");
+    tabSignup.classList.add("active"); tabLogin.classList.remove("active");
+    switchText.innerHTML = 'Already have an account? <a id="toLogin">Log in</a>';
+    document.getElementById("toLogin").onclick = showLogin;
+  }
+  function showLogin(){
+    loginForm.classList.remove("hidden");
+    signupForm.classList.add("hidden");
+    tabLogin.classList.add("active"); tabSignup.classList.remove("active");
+    switchText.innerHTML = 'Don\'t have an account? <a id="toSignup">Sign up</a>';
+    document.getElementById("toSignup").onclick = showSignup;
+  }
+  tabSignup.onclick = showSignup;
+  tabLogin.onclick = showLogin;
+  toLogin.onclick = showLogin;
+
+  // Signup submit
+  signupForm.addEventListener("submit", e => {
+    e.preventDefault();
+    const msg = document.getElementById("sMsg");
+    const code = document.getElementById("sCode").textContent;
+    const input = document.getElementById("sCaptcha").value.trim().toUpperCase();
+    if(input !== code){
+      msg.className = "msg err";
+      msg.textContent = "Incorrect code. Try again.";
+      newCode("sCode");
+      document.getElementById("sCaptcha").value = "";
+      return;
+    }
+    msg.className = "msg ok";
+    msg.textContent = "Account created successfully!";
+    signupForm.reset();
+    newCode("sCode");
+  });
+
+  // Login submit
+  loginForm.addEventListener("submit", e => {
+    e.preventDefault();
+    const msg = document.getElementById("lMsg");
+    const code = document.getElementById("lCode").textContent;
+    const input = document.getElementById("lCaptcha").value.trim().toUpperCase();
+    if(input !== code){
+      msg.className = "msg err";
+      msg.textContent = "Incorrect code. Try again.";
+      newCode("lCode");
+      document.getElementById("lCaptcha").value = "";
+      return;
+    }
+    msg.className = "msg ok";
+    msg.textContent = "Logged in successfully!";
+    loginForm.reset();
+    newCode("lCode");
+  });
+</script>
+  
+ <script src="wave-background.js"></script>
+</body>
+</html>

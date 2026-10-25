@@ -1,0 +1,751 @@
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background:
+      radial-gradient(circle at 20% 10%, rgba(37,184,255,0.25), transparent 40%),
+      radial-gradient(circle at 80% 60%, rgba(255,80,160,0.18), transparent 45%),
+      #05070a;
+    background-attachment: fixed;
+    color: #cfe9ff;
+}
+/* ============================================
+   WITHDRAW CARD — stackable, clickable listing
+   ============================================ */
+
+/* Wrap your JS-generated cards in this so they
+   stack with breathing room and hover lift isn't
+   clipped between neighbors. */
+.withdraw-list {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding: 4px 0;
+}
+
+.withdraw-card {
+  position: relative;
+  width: 100%;
+  max-width: 700px;
+  min-height: 155px;      /* was fixed height:155px — min-height lets it
+                              grow instead of clipping longer content */
+  margin: 0 auto;
+  display: flex;
+  overflow: hidden;
+  box-sizing: border-box;
+
+  /* transparent background */
+  background: transparent;
+  border: 1px solid #087bc2;
+  border-radius: 10px;
+
+  box-shadow:
+    0 0 5px rgba(0, 136, 255, 0.8),
+    0 0 15px rgba(0, 136, 255, 0.35);
+
+  color: white;
+  cursor: pointer;
+  z-index: 1;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+/* If fully transparent reads too washed-out against your page background,
+   swap the line above for a frosted-glass tint instead:
+   background: rgba(2, 6, 10, 0.35);
+   backdrop-filter: blur(10px);
+   -webkit-backdrop-filter: blur(10px);
+*/
+
+.withdraw-card:hover {
+  transform: translateY(-3px);
+  border-color: #25b8ff;
+  box-shadow:
+    0 0 8px rgba(0, 136, 255, 0.9),
+    0 0 24px rgba(0, 136, 255, 0.45);
+  z-index: 5;             /* pops above stacked neighbors on hover */
+}
+
+.withdraw-card:active {
+  transform: translateY(-1px) scale(0.996);
+}
+
+.withdraw-card:focus-visible {
+  outline: 2px solid #25b8ff;
+  outline-offset: 3px;
+}
+
+/* --- click indicator badge, top-right corner --- */
+.withdraw-card::after {
+  content: "";
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: rgba(37, 184, 255, 0.15);
+  border: 1px solid rgba(37, 184, 255, 0.7);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2325b8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 11px 11px;
+  animation: withdraw-pulse 2.2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes withdraw-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(37, 184, 255, 0.45); }
+  50%      { box-shadow: 0 0 0 5px rgba(37, 184, 255, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .withdraw-card,
+  .withdraw-card::after {
+    animation: none;
+    transition: none;
+  }
+}
+
+.withdraw-image {
+        width: 42%;
+        height: 100%;
+        background: #161616;
+        flex-shrink: 0;
+    }
+
+    .withdraw-image img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+    }
+
+.withdraw-info {
+  width: 58%;
+  padding: 10px 34px 10px 11px; /* right padding clears the click badge */
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.withdraw-title {
+  order: 1;
+  margin: 0 0 3px;
+  color: #25b8ff;
+  font-size: 21px;
+  line-height: 1.05;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.withdraw-line {
+  order: 2;
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+/* Description now sits pinned to the bottom of the card,
+   below the stat lines — no JS/markup changes needed,
+   flex "order" handles the reflow regardless of append order. */
+.withdraw-descrip {
+  order: 3;
+  margin-top: auto;
+  padding-top: 6px;
+  border-top: 1px solid rgba(37, 184, 255, 0.2);
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 12px;
+  font-style: italic;
+  line-height: 1.3;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@media (max-width: 480px) {
+  .withdraw-card {
+    min-height: 135px;
+    border-radius: 9px;
+  }
+
+  .withdraw-info {
+    padding: 8px 28px 8px 9px;
+  }
+
+  .withdraw-title {
+    font-size: 17px;
+  }
+
+  .withdraw-line {
+    font-size: 15px;
+  }
+
+  .withdraw-descrip {
+    font-size: 11px;
+  }
+
+  .withdraw-card {
+  /* ...existing styles... */
+  margin-bottom: 14px;
+}
+
+.withdraw-card:last-child {
+  margin-bottom: 0;
+}
+
+  .withdraw-card::after {
+    width: 18px;
+    height: 18px;
+    top: 8px;
+    right: 8px;
+    background-size: 9px 9px;
+  }
+}
+
+    
+/* =========================
+       POP CLICK FULL SCREEN
+    ========================== */
+    
+/* =========================
+   PREMIUM POPUP FULL SCREEN
+========================== */
+.ai-overlay {
+    position: fixed;
+    inset: 0;
+    /* Richer dark background with a glass blur effect */
+    background: rgba(4, 9, 20, 0.85);
+    backdrop-filter: blur(8px); 
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Active state for smooth fade in */
+.ai-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+/* Main deposit container */
+.ai-page {
+    width: 100%;
+    max-width: 360px;
+    /* Subtle gradient for depth */
+    background: linear-gradient(145deg, #0d1b2c 0%, #08101a 100%);
+    /* Thinner, cleaner border with a top highlight */
+    border: 1px solid rgba(22, 133, 255, 0.2);
+    border-top: 1px solid rgba(22, 133, 255, 0.6);
+    border-radius: 20px;
+    padding: 30px 25px;
+    text-align: center;
+    /* Sleeker, wider glow */
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(22, 133, 255, 0.15);
+    /* Entry animation setup */
+    transform: scale(0.95) translateY(15px);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Scales up playfully when active */
+.ai-overlay.active .ai-page {
+    transform: scale(1) translateY(0);
+}
+
+/* Modal Title */
+#withdraw-title {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0 0 10px 0;
+    font-size: 19px;
+    font-weight: 600;
+    color: #ffffff;
+    /* Glowing text effect */
+    text-shadow: 0 0 10px rgba(22, 133, 255, 0.4); 
+    
+}
+
+/* Base text styling for the stats */
+#overlay-content div p {
+    margin: 12px 0;
+    color: #94a3b8; /* Soft slate gray for readability */
+    font-size: 0.95rem;
+}
+
+/* Make labels pop if you use <strong> tags inside the <p> */
+#overlay-content div p strong {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+/* Highlighting the Total Income in a "Money Fashion" for Dark Mode */
+#withdraw-total-income {
+    color: #10b981; /* Bright emerald green */
+    background: rgba(16, 185, 129, 0.1); /* Transparent green box */
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    font-size: 1.15rem !important;
+    font-weight: 700;
+    padding: 14px;
+    border-radius: 12px;
+    text-align: center;
+    margin: 20px 0 !important;
+    box-shadow: inset 0 0 10px rgba(16, 185, 129, 0.05);
+}
+
+/* Scheme Description */
+#description {
+    font-size: 0.85rem !important;
+    color: #64748b !important;
+    line-height: 1.6;
+    /* Center text looks cleaner than justified on mobile */
+    text-align: center; 
+    /* Put the description in its own darkened box */
+    background: rgba(0, 0, 0, 0.25);
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 25px !important;
+}
+
+/* Call to Action Button */
+#place-aibuy {
+    width: 100%;
+    border: none;
+    padding: 16px;
+    border-radius: 12px;
+    /* Gradient blue button */
+    background: linear-gradient(90deg, #1685ff 0%, #0056cc 100%);
+    color: white;
+    font-weight: 800;
+    font-size: 16px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(22, 133, 255, 0.3);
+    transition: all 0.2s ease;
+}
+
+/* Button Hover State */
+#place-aibuy:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 22px rgba(22, 133, 255, 0.5);
+    background: linear-gradient(90deg, #1a8bff 0%, #0060e6 100%);
+}
+
+/* Button Click/Active State */
+#place-aibuy:active {
+    transform: scale(0.96) translateY(0);
+    box-shadow: 0 2px 10px rgba(22, 133, 255, 0.4);
+}
+
+
+
+
+
+
+
+.ai-header {
+        height: 54px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        position: relative;
+    }
+
+    .ai-title {
+        font-size: 20px;
+        font-weight: bold;
+        color: #fff;
+    }
+
+    .back-btn {
+        position: absolute;
+        left: 2px;
+        top: 13px;
+
+        width: 25px;
+        height: 25px;
+
+        background: transparent;
+        border: none;
+
+        cursor: pointer;
+    }
+
+    .back-btn::before {
+        content: "";
+        position: absolute;
+
+        width: 13px;
+        height: 13px;
+
+        border-left: 2px solid white;
+        border-bottom: 2px solid white;
+
+        transform: rotate(45deg);
+
+        left: 5px;
+        top: 5px;
+    }
+
+
+
+
+
+
+/* ===============================
+   POPUP OVERLAY
+================================ */
+.popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.88);
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 9999;
+    padding: 15px;
+
+    box-sizing: border-box;
+}
+
+
+/* ===============================
+   POPUP CARD
+================================ */
+.popup-content {
+    width: 100%;
+    max-width: 380px;
+
+    background: #000;
+    border: 1px solid #008cff;
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    position: relative;
+
+    box-shadow:
+        0 0 20px rgba(0, 140, 255, 0.35),
+        0 0 50px rgba(0, 140, 255, 0.12);
+
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+    box-sizing: border-box;
+}
+
+
+/* ===============================
+   BLUE HEADER
+================================ */
+#popup-title {
+    margin: 0;
+
+    padding: 15px 45px 15px 20px;
+
+    background: #008cff;
+
+    color: #fff;
+
+    font-size: 18px;
+    font-weight: 700;
+
+    text-align: center;
+
+    letter-spacing: 0.5px;
+
+    box-sizing: border-box;
+}
+
+
+/* ===============================
+   POPUP MESSAGE
+================================ */
+.popup-textarea {
+    display: block;
+
+    width: 100%;
+
+    min-height: 180px;
+    max-height: 70vh;
+
+    padding: 20px;
+
+    box-sizing: border-box;
+
+    border: none;
+    outline: none;
+
+    background: #000;
+
+    color: #fff;
+
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-style: italic;
+    line-height: 1.7;
+
+    text-align: left;
+
+    resize: none;
+
+    overflow: hidden;
+
+    white-space: pre-wrap;
+
+    word-wrap: break-word;
+}
+
+
+/* ===============================
+   CLOSE BUTTON
+================================ */
+.close-btn {
+    position: absolute;
+
+    top: 11px;
+    right: 15px;
+
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #fff;
+
+    font-size: 25px;
+    font-weight: 300;
+
+    cursor: pointer;
+
+    line-height: 1;
+
+    border-radius: 50%;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.close-btn:hover {
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+}
+
+
+/* ===============================
+   POPUP ANIMATION
+================================ */
+@keyframes popIn {
+    from {
+        transform: scale(0.88);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+
+/* ===============================
+   MOBILE ADJUSTMENT
+================================ */
+@media (max-width: 400px) {
+
+    .popup-overlay {
+        padding: 12px;
+    }
+
+    .popup-content {
+        max-width: 100%;
+        border-radius: 16px;
+    }
+
+    #popup-title {
+        font-size: 17px;
+        padding: 14px 45px 14px 18px;
+    }
+
+/* Bottom double chevron styling */
+.chevron-icon {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+  .ai-products-header {
+    position: relative;
+
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 20px;
+
+    border-radius: 20px
+
+    overflow: hidden;
+}
+
+
+/* Decorative glow */
+.ai-products-header::before {
+    content: "";
+
+    position: absolute;
+
+    width: 130px;
+    height: 130px;
+
+    top: -70px;
+    right: -50px;
+
+    background: rgba(0, 140, 255, 0.18);
+
+    border-radius: 50%;
+
+    filter: blur(30px);
+
+    pointer-events: none;
+}
+
+
+
+
+/* Small label */
+.ai-header-label {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: #008cff;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+}
+
+
+/* Main title */
+.ai-header-content h2 {
+    margin: 0;
+
+    color: #fff;
+
+    font-size: 24px;
+    font-weight: 750;
+
+    line-height: 1.2;
+}
+
+
+/* Description */
+.ai-header-content p {
+    margin: 9px 0 18px;
+
+    max-width: 330px;
+
+    color: #aeb8c4;
+
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+
+/* VIP link */
+.vip-ai-link {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    width: 100%;
+
+    padding: 12px 13px;
+
+    box-sizing: border-box;
+
+    background: rgba(0, 140, 255, 0.08);
+
+    border: 1px solid rgba(0, 140, 255, 0.3);
+
+    border-radius: 12px;
+
+    color: #fff;
+
+    text-decoration: none;
+
+    transition: 0.2s ease;
+}
+
+
+.vip-ai-link:hover {
+    background: rgba(0, 140, 255, 0.15);
+
+    border-color: #008cff;
+
+    transform: translateY(-1px);
+}
+
+
+/* Crown */
+.vip-ai-link > .fa-crown {
+    color: #ffd54a;
+
+    font-size: 17px;
+}
+
+
+/* VIP text */
+.vip-ai-link span {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+
+.vip-ai-link strong {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+
+.vip-ai-link small {
+    color: #8e9aa8;
+
+    font-size: 10px;
+}
+
+
+/* Arrow */
+.vip-ai-link > .fa-chevron-right {
+    color: #008cff;
+
+    font-size: 11px;
+}

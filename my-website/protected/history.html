@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Investment Transactions</title>
+
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #2563eb;
+      --success: #10b981;
+      --error: #ef4444;
+      --border: rgba(255, 255, 255, 0.1);
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      padding: 20px 10px;
+      min-height: 100vh;
+    }
+
+
+/* ================================
+   DYNAMIC INVESTMENT CARD
+================================ */
+
+.investment-card {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+}
+
+/* Investment title */
+.investment-card .investment-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+
+/* Individual information rows */
+.investment-card .investment-info {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin: 6px 0;
+  line-height: 1.4;
+}
+
+/* Highlight values */
+.investment-card .investment-value {
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Price */
+.investment-card .investment-price {
+  color: var(--success);
+  font-weight: 700;
+}
+
+/* Profit */
+.investment-card .investment-profit {
+  color: var(--success);
+  font-weight: 700;
+}
+
+/* Lock period */
+.investment-card .investment-lock {
+  color: var(--text-muted);
+}
+
+/* Created date */
+.investment-card .investment-created {
+  color: var(--text-muted);
+}
+
+/* Payout date */
+.investment-card .investment-payout {
+  color: var(--text-muted);
+}
+
+/* Status */
+.investment-card .investment-status {
+  margin-top: 12px;
+  padding-top: 9px;
+  border-top: 1px solid var(--border);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+/* Paid out */
+.investment-card .status-paid {
+  color: var(--error);
+}
+
+/* Not paid out */
+.investment-card .status-active {
+  color: var(--success);
+}
+
+
+
+
+
+
+
+
+
+    
+
+    .dashboard-card {
+      width: 100%;
+      max-width: 450px;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      position: relative;
+    }
+
+    .card-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .tab-toggle {
+      display: flex;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 4px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin-bottom: 20px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.9rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .summary-card {
+      display: flex;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      padding: 14px;
+      border-radius: 8px;
+      margin-bottom: 18px;
+      gap: 10px;
+    }
+
+    .summary-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .summary-item .label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .summary-item .value {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .money-text {
+      color: var(--success);
+    }
+
+    .status-msg {
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .status-msg.error {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--error);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .status-msg.info {
+      background: rgba(148, 163, 184, 0.15);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+
+    #no-investments-message,
+    #error-message {
+      display: none;
+    }
+
+    .investments-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 120px;
+    }
+
+    .tx-item {
+      padding: 14px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    .tx-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .tx-type {
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .tx-price {
+      color: var(--success);
+      font-weight: 700;
+    }
+
+    .tx-info {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .tx-info div {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .tx-info strong {
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .tx-status {
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid var(--border);
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .active-status {
+      color: var(--success);
+    }
+
+    .expired-status {
+      color: var(--error);
+    }
+
+    .toast-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      left: 20px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .toast-popup {
+      background: #1e293b;
+      color: #fff;
+      border-left: 4px solid var(--success);
+      border-top: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 16px;
+      border-radius: 8px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+      font-size: 0.85rem;
+      animation: popupSlide 0.4s ease-out forwards;
+    }
+
+    .toast-popup strong {
+      color: var(--success);
+    }
+
+    @keyframes popupSlide {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+    }
+  </style>
+<style>
+/* Tab visibility only: never remove/recreate JS-populated content. */
+.tab-content[hidden],
+.tab-panel[hidden],
+[data-tab-content][hidden] {
+    display: none !important;
+}
+</style>
+</head>
+
+<body>
+
+  <div class="dashboard-card">
+
+    <h1 class="card-title">
+      Investment Transactions
+    </h1>
+
+    <!-- Toggle Buttons -->
+    <div class="tab-toggle">
+
+      <button
+        id="btn-ai"
+        class="tab-btn active"
+        type="button">
+        AI Investment
+      </button>
+
+      <button
+        id="btn-crypto"
+        class="tab-btn"
+        type="button">
+        Crypto Investment
+      </button>
+
+    </div>
+
+
+    <!-- Summary -->
+    <div id="summary" class="summary-card">
+
+      <div class="summary-item">
+
+        <span class="label">
+          User ID
+        </span>
+
+        <span
+          id="user-id"
+          class="value">
+          —
+        </span>
+
+      </div>
+
+
+      <div
+        class="summary-item"
+        style="text-align:right;">
+
+        <span class="label">
+          Total Investments
+        </span>
+
+        <span
+          id="total-investments"
+          class="value money-text">
+          UGX 0
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- Feedback -->
+    <div id="status-message"></div>
+
+    <div id="complete-message"></div>
+
+
+    <!-- No investments -->
+    <div
+      id="no-investments-message"
+      class="status-msg info">
+
+      No investments found for this category.
+
+    </div>
+
+
+    <!-- Error -->
+    <div
+      id="error-message"
+      class="status-msg error">
+
+      An error occurred while fetching transactions.
+
+    </div>
+
+
+    <!-- Dynamic investment container -->
+    <div
+      id="investments-container"
+      class="investments-list">
+
+    </div>
+
+  </div>
+
+
+  <!-- Live Popups -->
+  <div
+    id="toast-container"
+    class="toast-container">
+  </div>
+
+
+  <script>
+
+    /*
+     * =========================================================
+     * INVESTMENT DATA
+     * =========================================================
+     *
+     * Your existing JS can send data into this page using:
+     *
+     * setInvestmentData(yourInvestmentsArray);
+     *
+     * Example:
+     *
+     * setInvestmentData([
+     *   {
+     *     type: "VIP AI",
+     *     price: 15000,
+     *     totalIncome: 20000,
+     *     lock: 3,
+     *     expiry: ...,
+     *     createdAt: ...
+     *   }
+     * ]);
+     *
+     * =========================================================
+     */
+
+    let investmentData = [];
+
+    let currentTab = "ai";
+
+
+    /*
+     * =========================================================
+     * FORMAT MONEY
+     * =========================================================
+     */
+
+    function formatMoney(amount) {
+
+      const number = Number(amount) || 0;
+
+      return "UGX " + number.toLocaleString();
+
+    }
+
+
+    /*
+     * =========================================================
+     * CONVERT FIRESTORE DATE / NORMAL DATE
+     * =========================================================
+     */
+
+    function convertDate(value) {
+
+      if (!value) {
+        return null;
+      }
+
+      // Firestore Timestamp
+      if (value.toDate) {
+
+        return value.toDate();
+
+      }
+
+      // JavaScript Date
+      if (value instanceof Date) {
+
+        return value;
+
+      }
+
+      // Timestamp-like object
+      if (
+        typeof value === "object" &&
+        value.seconds !== undefined
+      ) {
+
+        return new Date(
+          value.seconds * 1000
+        );
+
+      }
+
+      const date = new Date(value);
+
+      if (!isNaN(date.getTime())) {
+
+        return date;
+
+      }
+
+      return null;
+    }
+
+
+    /*
+     * =========================================================
+     * FORMAT DATE
+     * =========================================================
+     */
+
+    function formatDate(value) {
+
+      const date = convertDate(value);
+
+      if (!date) {
+        return "N/A";
+      }
+
+      return date.toLocaleString();
+
+    }
+
+
+    /*
+     * =========================================================
+     * CHECK EXPIRY
+     * =========================================================
+     */
+
+    function isExpired(value) {
+
+      const expiryDate = convertDate(value);
+
+      if (!expiryDate) {
+
+        return false;
+
+      }
+
+      return new Date() >= expiryDate;
+
+    }
+
+
+    /*
+     * =========================================================
+     * GET CATEGORY
+     * =========================================================
+     *
+     * This accepts different possible field names.
+     *
+     * If your investment contains:
+     *
+     * category: "ai"
+     *
+     * it uses that.
+     *
+     * If category isn't present, it checks type.
+     *
+     * =========================================================
+     */
+
+    function getInvestmentCategory(item) {
+
+      if (!item) {
+        return "ai";
+      }
+
+      if (item.category) {
+
+        return String(
+          item.category
+        ).toLowerCase();
+
+      }
+
+      if (item.type) {
+
+        const type =
+          String(item.type).toLowerCase();
+
+        if (
+          type.includes("crypto") ||
+          type.includes("bitcoin") ||
+          type.includes("usdt") ||
+          type.includes("btc")
+        ) {
+
+          return "crypto";
+
+        }
+
+      }
+
+      return "ai";
+
+    }
+
+
+    /*
+     * =========================================================
+     * SET INVESTMENT DATA
+     * =========================================================
+     *
+     * THIS is the function your other JS can call.
+     *
+     * =========================================================
+     */
+
+    window.setInvestmentData = function(data) {
+
+      if (!Array.isArray(data)) {
+
+        console.error(
+          "setInvestmentData expects an array."
+        );
+
+        investmentData = [];
+
+      } else {
+
+        investmentData = data;
+
+      }
+
+      // Do not re-render/clear JS-populated content when switching tabs.
+    };
+
+
+    /*
+     * =========================================================
+     * SET USER ID
+     * =========================================================
+     *
+     * Your other JS can call:
+     *
+     * setInvestmentUserId(userId);
+     *
+     * =========================================================
+     */
+
+    window.setInvestmentUserId = function(userId) {
+
+      const element =
+        document.getElementById("user-id");
+
+      if (!element) {
+        return;
+      }
+
+      element.textContent =
+        userId || "—";
+
+    };
+
+
+    /*
+     * =========================================================
+     * SWITCH TAB
+     * =========================================================
+     */
+
+    function switchTab(type) {
+
+      currentTab = type;
+
+      const aiButton =
+        document.getElementById("btn-ai");
+
+      const cryptoButton =
+        document.getElementById("btn-crypto");
+
+      if (aiButton) {
+
+        aiButton.classList.toggle(
+          "active",
+          type === "ai"
+        );
+
+      }
+
+      if (cryptoButton) {
+
+        cryptoButton.classList.toggle(
+          "active",
+          type === "crypto"
+        );
+
+      }
+
+      // Do not re-render/clear JS-populated content when switching tabs.
+    }
+
+
+    /*
+     * =========================================================
+     * RENDER INVESTMENTS
+     * =========================================================
+     */
+
+    function renderInvestments() {
+
+      const container =
+        document.getElementById(
+          "investments-container"
+        );
+
+      const noInvMsg =
+        document.getElementById(
+          "no-investments-message"
+        );
+
+      const errorMsg =
+        document.getElementById(
+          "error-message"
+        );
+
+      const totalElement =
+        document.getElementById(
+          "total-investments"
+        );
+
+
+      if (!container) {
+        return;
+      }
+
+
+      if (noInvMsg) {
+
+        noInvMsg.style.display = "none";
+
+      }
+
+      if (errorMsg) {
+
+        errorMsg.style.display = "none";
+
+      }
+
+
+      container.innerHTML = "";
+
+
+      /*
+       * Filter according to current tab
+       */
+
+      const filteredInvestments =
+        investmentData.filter(function(item) {
+
+          return (
+            getInvestmentCategory(item)
+            === currentTab
+          );
+
+        });
+
+
+      /*
+       * Calculate total investment amount
+       */
+
+      let totalAmount = 0;
+
+      filteredInvestments.forEach(function(item) {
+
+        totalAmount +=
+          Number(item.price) || 0;
+
+      });
+
+
+      if (totalElement) {
+
+        totalElement.textContent =
+          formatMoney(totalAmount);
+
+      }
+
+
+      /*
+       * Nothing found
+       */
+
+      if (
+        !filteredInvestments.length
+      ) {
+
+        if (noInvMsg) {
+
+          noInvMsg.style.display = "block";
+
+        }
+
+        return;
+
+      }
+
+
+      /*
+       * Render every investment
+       */
+
+      filteredInvestments.forEach(
+        function(item) {
+
+          const row =
+            document.createElement("div");
+
+          row.className = "tx-item";
+
+
+          const expired =
+            isExpired(item.expiry);
+
+
+          const statusText =
+            expired
+              ? "EXPIRED"
+              : "ACTIVE";
+
+
+          const statusClass =
+            expired
+              ? "expired-status"
+              : "active-status";
+
+
+          row.innerHTML = `
+
+            <div class="tx-top">
+
+              <div class="tx-type">
+                ${item.type || "Investment"}
+              </div>
+
+              <div class="tx-price">
+                ${formatMoney(item.price)}
+              </div>
+
+            </div>
+
+
+            <div class="tx-info">
+
+              <div>
+                Income:
+                <strong>
+                  ${formatMoney(item.totalIncome)}
+                </strong>
+              </div>
+
+              <div>
+                Lock:
+                <strong>
+                  ${item.lock || 0} days
+                </strong>
+              </div>
+
+              <div>
+                Created:
+                <strong>
+                  ${formatDate(item.createdAt)}
+                </strong>
+              </div>
+
+              <div>
+                Expiry:
+                <strong>
+                  ${formatDate(item.expiry)}
+                </strong>
+              </div>
+
+            </div>
+
+
+            <div
+              class="tx-status ${statusClass}">
+
+              ${statusText}
+
+            </div>
+
+          `;
+
+
+          container.appendChild(row);
+
+        }
+      );
+
+    }
+
+
+    /*
+     * =========================================================
+     * BUTTON EVENTS
+     * =========================================================
+     */
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      function() {
+
+        const btnAi =
+          document.getElementById(
+            "btn-ai"
+          );
+
+        const btnCrypto =
+          document.getElementById(
+            "btn-crypto"
+          );
+
+
+        if (btnAi) {
+
+          btnAi.addEventListener(
+            "click",
+            function() {
+
+              switchTab("ai");
+
+            }
+          );
+
+        }
+
+
+        if (btnCrypto) {
+
+          btnCrypto.addEventListener(
+            "click",
+            function() {
+
+              switchTab("crypto");
+
+            }
+          );
+
+        }
+
+
+        // Do not re-render/clear JS-populated content when switching tabs.
+      }
+    );
+
+
+    /*
+     * =========================================================
+     * LIVE WITHDRAWAL POPUPS
+     * =========================================================
+     */
+
+    const ugPrefixes = [
+      "077",
+      "078",
+      "076",
+      "075",
+      "070",
+      "074"
+    ];
+
+
+    function getRandomUgPhone() {
+
+      const prefix =
+        ugPrefixes[
+          Math.floor(
+            Math.random() *
+            ugPrefixes.length
+          )
+        ];
+
+      const randomSuffix =
+        Math.floor(
+          100 +
+          Math.random() * 900
+        );
+
+      return `${prefix}****${randomSuffix}`;
+
+    }
+
+
+    function getRandomAmount() {
+
+      const amount =
+        Math.floor(
+          Math.random() *
+          (200000 - 15000 + 1)
+          + 15000
+        );
+
+      const rounded =
+        Math.round(
+          amount / 5000
+        ) * 5000;
+
+      return formatMoney(rounded);
+
+    }
+
+
+    function triggerWithdrawalPopup() {
+
+      const toastContainer =
+        document.getElementById(
+          "toast-container"
+        );
+
+
+      if (!toastContainer) {
+        return;
+      }
+
+
+      const toast =
+        document.createElement("div");
+
+      toast.className =
+        "toast-popup";
+
+
+      const phone =
+        getRandomUgPhone();
+
+      const amount =
+        getRandomAmount();
+
+
+      toast.innerHTML = `
+
+        <span>
+          💸 User
+          <strong>${phone}</strong>
+          withdrew
+          <strong>${amount}</strong>
+        </span>
+
+      `;
+
+
+      toastContainer.appendChild(
+        toast
+      );
+
+
+      setTimeout(
+        function() {
+
+          toast.style.animation =
+            "fadeOut 0.4s ease-out forwards";
+
+
+          setTimeout(
+            function() {
+
+              toast.remove();
+
+            },
+            400
+          );
+
+        },
+        3500
+      );
+
+    }
+
+
+    /*
+     * Start popup messages
+     */
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      function() {
+
+        setInterval(
+          triggerWithdrawalPopup,
+          4000
+        );
+
+      }
+    );
+
+  </script>
+<script type="module" src="withdrawals.js"> </script>
+
+</body>
+</html>
