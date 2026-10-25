@@ -252,6 +252,7 @@ small {
       
 
       <form id="paymentForm">
+        <input id="userId" type="hidden">
       
         <div class="group">
           <label for="phone">Mobile Money Number</label>
@@ -260,7 +261,7 @@ small {
         </div>
         <div class="group">
           <label for="amount">Amount (UGX)</label>
-          <input id="amount" type="number" min="500" max="10000000" step="1" placeholder="Enter Amount to deposit" required>
+          <input id="amount" type="number" min="1" max="10000000" step="1" placeholder="Enter Amount to deposit" required>
           <small>Minimum Deposit UGX 15,000</small>
         </div>
         <div id="status" class="status" role="status" aria-live="polite"></div>
@@ -276,10 +277,165 @@ small {
     </section>
   </main>
 
-  
-  
 
-  
+  <script>
+    const API_BASE = 'https://marzpay-api.investinginaionline.workers.dev';
+
+    const userId = document.getElementById('userId'),
+          phone = document.getElementById('phone'),
+          amount = document.getElementById('amount'),
+          payBtn = document.getElementById('payBtn'),
+          statusEl = document.getElementById('status'),
+          details = document.getElementById('details'),
+          referenceEl = document.getElementById('reference'),
+          stateEl = document.getElementById('state');
+
+    let timer = null,
+        active = false;
+
+    // Finds the logged-in user's ID. Checks (in order): a hidden field value,
+    // window globals set by your app, URL ?userId=, then localStorage/sessionStorage.
+    function resolveUserId() {
+      const fromWindow = window.currentUserId || window.userId || window.uid ||
+                         (window.currentUser && (window.currentUser.uid || window.currentUser.id)) ||
+                         (window.auth && window.auth.currentUser && window.auth.currentUser.uid);
+      const fromUrl = new URLSearchParams(location.search).get('userId');
+      const keys = ['userId', 'uid', 'user_id', 'currentUserId'];
+      let fromStore = '';
+      for (const k of keys) {
+        fromStore = localStorage.getItem(k) || sessionStorage.getItem(k) || '';
+        if (fromStore) break;
+      }
+      return String(userId.value || fromWindow || fromUrl || fromStore || '').trim();
+    }
+
+    function message(t, c = '') {
+      statusEl.textContent = t;
+      statusEl.className = 'status ' + c;
+    }
+
+    function stop() {
+      active = false;
+      if (timer) {
+        clearTimeout(timer);
+        timer = null;
+      }
+    }
+
+    function busy(v) {
+      payBtn.disabled = v;
+      payBtn.textContent = v ? 'Processing...' : 'Pay Now';
+    }
+
+    payBtn.addEventListener('click', async e => {
+      e.preventDefault();
+      stop();
+
+      const uid = resolveUserId(),
+            ph = phone.value.trim(),
+            amt = Number(amount.value);
+
+      if (!uid) return message('Could not identify your account. Please log in again.', 'error');
+      if (!ph) return message('Please enter your mobile-money number.', 'error');
+      if (!Number.isInteger(amt) || amt < 1 || amt > 10000000) {
+        return message('Please enter a valid amount (maximum UGX 10,000,000).', 'error');
+      }
+
+      busy(true);
+      message('Starting payment...', 'processing');
+
+      try {
+        const r = await fetch(API_BASE + '/collect-money', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: uid, phone: ph, amount: amt })
+        });
+        const d = await r.json();
+
+        if (!r.ok || d.status !== 'success') {
+          throw new Error(d.message || 'Payment could not be initiated.');
+        }
+
+        const t = d?.data?.transaction || {},
+              ref = t.reference || d?.data?.reference || '';
+
+        if (!ref) throw new Error('MarzPay did not return a reference.');
+
+        referenceEl.textContent = ref;
+        stateEl.textContent = t.status || 'processing';
+        details.classList.remove('hidden');
+        message('Payment request sent. Approve the MTN/Airtel prompt on your phone.', 'processing');
+
+        poll(ref);
+      } catch (err) {
+        message(err.message || 'Unable to start payment.', 'error');
+        busy(false);
+      }
+    });
+
+    function poll(ref) {
+      active = true;
+      let n = 0;
+
+      (async function check() {
+        if (!active) return;
+        n++;
+
+        try {
+          const r = await fetch(API_BASE + '/payment-status/' + encodeURIComponent(ref), { cache: 'no-store' }),
+                d = await r.json();
+
+          if (!r.ok || d.status !== 'success') {
+            throw new Error(d.message || 'Status check failed.');
+          }
+
+          const p = d.data || {},
+                s = p.status || 'processing';
+
+          stateEl.textContent = s;
+
+          if (s === 'paid') {
+            stop();
+            message('Payment successful.', 'success');
+            busy(false);
+            return;
+          }
+          if (s === 'failed') {
+            stop();
+            message('Payment failed.', 'error');
+            busy(false);
+            return;
+          }
+          if (s === 'cancelled') {
+            stop();
+            message('Payment was cancelled.', 'error');
+            busy(false);
+            return;
+          }
+
+          message('Waiting for payment confirmation. Approve the prompt on your phone.', 'processing');
+
+          if (n >= 60) {
+            stop();
+            message('Confirmation is taking longer than expected. Check the payment status before trying again.', 'processing');
+            busy(false);
+            return;
+          }
+
+          timer = setTimeout(check, 3000);
+        } catch (err) {
+          if (n >= 60) {
+            stop();
+            message('Unable to confirm the payment automatically. Check the payment status before retrying.', 'error');
+            busy(false);
+            return;
+          }
+          timer = setTimeout(check, 3000);
+        }
+      })();
+    }
+  </script>
+
     <script type="module" src="/protected-assets/firestoreadminlogic.js"></script>
 </body>
 </html>
