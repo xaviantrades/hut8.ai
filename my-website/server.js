@@ -51,6 +51,12 @@ app.use(session({
 // Put index.html and authication.js inside public/.
 app.use(express.static(path.join(__dirname, "public")));
 
+// Serve static assets without exposing protected HTML files.
+app.use("/protected-assets", (req, res, next) => {
+  if (!/\.(?:css|js|map|png|jpe?g|gif|svg|webp|woff2?|ttf|ico)$/i.test(req.path)) return res.sendStatus(404);
+  next();
+}, express.static(path.join(__dirname, "protected")));
+
 // Existing accounts use SHA-256 hashes.
 // Retain this temporarily for compatibility.
 function hashPassword(password) {
