@@ -242,11 +242,11 @@ app.get("/protected/:page", requireLogin, (req, res) => {
     "bitcoin-income.html",
     "chats.html",
     "crypto_payment_confirmation.html",
-    "history.html"
-    "payment_form_spinner_fixed.html"
-    "raffle.html"
-  "reffral.html"
-  "user-account.html"
+    "history.html",
+    "payment_form_spinner_fixed.html",
+    "raffle.html",
+  "reffral.html",
+  "user-account.html",
   "signup-login.html"
   ];
 
