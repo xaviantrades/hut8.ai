@@ -844,7 +844,7 @@ async function loadWithdrawals() {
     const withdrawals = await fetchWithdrawals();
 
     if (withdrawals.length === 0) {
-      renderEmpty(container, "No withdrawal records found.");
+      renderEmpty(container, "No AI Machines found.");
       return;
     }
 
