@@ -226,11 +226,40 @@ app.post("/api/login", async (req, res) => {
 });
 
 // Protected dashboard: never expose this file through public static hosting.
+// Protected landing page.
 app.get("/dashboard", requireLogin, (req, res) => {
   res.set("Cache-Control", "no-store");
 
   res.sendFile(
     path.join(__dirname, "protected", "landing.html")
+  );
+});
+
+// Serve other protected HTML pages.
+app.get("/protected/:page", requireLogin, (req, res) => {
+  const allowedPages = [
+    "ai.html",
+    "bitcoin-income.html",
+    "chats.html",
+    "crypto_payment_confirmation.html",
+    "history.html"
+    "payment_form_spinner_fixed.html"
+    "raffle.html"
+  "reffral.html"
+  "user-account.html"
+  "signup-login.html"
+  ];
+
+  const page = req.params.page;
+
+  if (!allowedPages.includes(page)) {
+    return res.status(404).send("Page not found");
+  }
+
+  res.set("Cache-Control", "no-store");
+
+  res.sendFile(
+    path.join(__dirname, "protected", page)
   );
 });
 
